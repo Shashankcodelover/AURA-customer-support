@@ -1,10 +1,24 @@
-﻿'use client';
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sparkles, RotateCcw, Menu, X, Activity, Layers, MessageSquare, LayoutDashboard, LineChart, GitGraph } from 'lucide-react';
+import {
+  Sparkles,
+  RotateCcw,
+  Menu,
+  X,
+  Activity,
+  MessageSquare,
+  LayoutDashboard,
+  LineChart,
+  GitGraph,
+  Volume2,
+  VolumeX,
+  Wifi,
+} from 'lucide-react';
 import { useAppState } from '@/lib/context/AppStateContext';
+import { isSoundEnabled, setSoundEnabled, playClickSound } from '@/lib/audio/soundEffects';
 
 const links = [
   { href: '/', label: 'Customer Chat', icon: MessageSquare },
@@ -17,17 +31,33 @@ export default function Nav() {
   const pathname = usePathname();
   const { resetDemo, tickets, capsules } = useAppState();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
+  const [ping, setPing] = useState(24);
 
-  const resolvedCount = tickets.filter(t => t.status === 'Resolved').length;
+  useEffect(() => {
+    setSoundOn(isSoundEnabled());
+    const interval = setInterval(() => {
+      setPing(Math.floor(18 + Math.random() * 12));
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const toggleSound = () => {
+    const nextState = !soundOn;
+    setSoundOn(nextState);
+    setSoundEnabled(nextState);
+    if (nextState) playClickSound();
+  };
+
+  const resolvedCount = tickets.filter((t) => t.status === 'Resolved').length;
   const rate = tickets.length ? Math.round((resolvedCount / tickets.length) * 100) : 63;
 
   return (
-    <header className="border-b border-white/10 sticky top-0 z-50 bg-[#060913]/85 backdrop-blur-xl">
+    <header className="border-b border-white/10 sticky top-0 z-50 bg-[#060913]/85 backdrop-blur-xl transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
-        
         {/* Brand & Telemetry */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/" onClick={() => playClickSound()} className="flex items-center gap-2.5 group">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 via-indigo-500 to-purple-600 p-[1px] shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition">
               <div className="w-full h-full bg-[#090d1a] rounded-[11px] flex items-center justify-center">
                 <Sparkles className="text-cyan-400 group-hover:scale-110 transition" size={18} />
@@ -54,6 +84,10 @@ export default function Nav() {
             <span>Qwen 2.5 Multi-Agent Engine</span>
             <span className="text-gray-600">|</span>
             <span className="text-gray-400">EnterPro Graph Active</span>
+            <span className="text-gray-600">|</span>
+            <span className="flex items-center gap-1 text-[10px] font-mono text-cyan-400">
+              <Wifi size={11} /> {ping}ms
+            </span>
           </div>
         </div>
 
@@ -67,6 +101,7 @@ export default function Nav() {
                 <Link
                   key={l.href}
                   href={l.href}
+                  onClick={() => playClickSound()}
                   className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition ${
                     isActive
                       ? 'bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-white border border-cyan-400/40 shadow-sm shadow-cyan-500/20'
@@ -89,15 +124,33 @@ export default function Nav() {
           <div className="hidden xl:flex items-center gap-3 px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.02] text-xs text-gray-400">
             <div className="flex items-center gap-1.5">
               <Activity size={13} className="text-emerald-400" />
-              <span>Auto-Resolve: <strong className="text-emerald-300">{rate}%</strong></span>
+              <span>
+                Auto-Resolve: <strong className="text-emerald-300">{rate}%</strong>
+              </span>
             </div>
             <span className="text-gray-700">·</span>
-            <span>MTTR: <strong className="text-cyan-300">1.4s</strong></span>
+            <span>
+              MTTR: <strong className="text-cyan-300">1.4s</strong>
+            </span>
           </div>
+
+          {/* Cybernetic Sound Toggle */}
+          <button
+            onClick={toggleSound}
+            title={soundOn ? 'Mute Cybernetic Audio' : 'Enable Cybernetic Audio'}
+            className={`p-2 rounded-xl border transition flex items-center gap-1 text-xs ${
+              soundOn
+                ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20'
+                : 'bg-white/5 border-white/10 text-gray-500 hover:text-white'
+            }`}
+          >
+            {soundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
+          </button>
 
           {/* Reset Demo Button */}
           <button
             onClick={() => {
+              playClickSound();
               if (window.confirm('Reset AURA demo state? Clears active session tickets and knowledge base.')) {
                 resetDemo();
               }
@@ -113,13 +166,19 @@ export default function Nav() {
         {/* Mobile Hamburger */}
         <div className="md:hidden flex items-center gap-2">
           <button
+            onClick={toggleSound}
+            className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:text-white"
+          >
+            {soundOn ? <Volume2 size={16} className="text-cyan-400" /> : <VolumeX size={16} />}
+          </button>
+
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:text-white"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
-
       </div>
 
       {/* Mobile Menu Dropdown */}
@@ -132,7 +191,10 @@ export default function Nav() {
               <Link
                 key={l.href}
                 href={l.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  playClickSound();
+                  setMobileMenuOpen(false);
+                }}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition ${
                   isActive ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-gray-400 hover:text-white'
                 }`}
@@ -144,6 +206,7 @@ export default function Nav() {
           })}
           <button
             onClick={() => {
+              playClickSound();
               resetDemo();
               setMobileMenuOpen(false);
             }}

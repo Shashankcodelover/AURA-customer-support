@@ -1,8 +1,10 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useState } from 'react';
 import { ReasoningStep } from '@/lib/types';
 import { Terminal, Cpu, ShieldCheck, Zap } from 'lucide-react';
+
+import { playStepSound } from '@/lib/audio/soundEffects';
 
 const AGENT_CONFIG: Record<string, { color: string; bg: string; border: string }> = {
   Router: { color: 'text-cyan-300', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
@@ -34,6 +36,7 @@ export default function ReasoningTimeline({
     const interval = setInterval(() => {
       i += 1;
       setVisible(i);
+      playStepSound();
       onProgress?.(steps.slice(0, i));
       if (i >= steps.length) {
         clearInterval(interval);

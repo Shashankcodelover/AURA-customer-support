@@ -25,6 +25,7 @@ import {
   Check,
   Download,
 } from 'lucide-react';
+import { playSendSound, playSuccessSound, playAlertSound, playClickSound } from '@/lib/audio/soundEffects';
 
 const SCENARIOS = [
   {
@@ -139,8 +140,10 @@ export default function Home() {
   function handleTimelineComplete(finished: InvestigationResult) {
     setShowFinal(true);
     if (finished.contextCapsule) {
+      playAlertSound();
       addCapsule(finished.contextCapsule);
     } else {
+      playSuccessSound();
       pushToast('✅ Action executed automatically — resolution sent to customer.', 'success');
     }
     addTicketRecord({
@@ -155,6 +158,7 @@ export default function Home() {
   }
 
   function resetConversation() {
+    playClickSound();
     setConversation([]);
     setResult(null);
     setShowFinal(false);
@@ -166,6 +170,7 @@ export default function Home() {
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    playClickSound();
     const reader = new FileReader();
     reader.onload = () => setAttachedImage(reader.result as string);
     reader.readAsDataURL(file);
@@ -174,6 +179,7 @@ export default function Home() {
 
   function send() {
     if (!input.trim() && !attachedImage) return;
+    playSendSound();
     setActiveScenario(null);
     const outgoing = input || 'Screenshot attached — please investigate.';
     runCase({ message: outgoing, imageDataUrl: attachedImage ?? undefined });
@@ -252,6 +258,7 @@ export default function Home() {
             <button
               key={s.id}
               onClick={() => {
+                playClickSound();
                 setActiveScenario(s.id);
                 setInput(s.message);
                 setAttachedImage(null);
@@ -375,6 +382,7 @@ export default function Home() {
             <button
               key={sug}
               onClick={() => {
+                playClickSound();
                 setInput(sug);
                 inputRef.current?.focus();
               }}
