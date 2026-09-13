@@ -18,6 +18,8 @@ import {
   Wifi,
   Search,
   Command,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useAppState } from '@/lib/context/AppStateContext';
 import { isSoundEnabled, setSoundEnabled, playClickSound } from '@/lib/audio/soundEffects';
@@ -32,7 +34,7 @@ const links = [
 
 export default function Nav() {
   const pathname = usePathname();
-  const { resetDemo, tickets, capsules } = useAppState();
+  const { resetDemo, tickets, capsules, theme, toggleTheme } = useAppState();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
@@ -166,6 +168,18 @@ export default function Nav() {
             </span>
           </div>
 
+          {/* Light / Dark Mode Toggle */}
+          <button
+            onClick={() => {
+              playClickSound();
+              toggleTheme();
+            }}
+            title={theme === 'light' ? 'Switch to Cybernetic Dark Mode' : 'Switch to Executive Light Mode'}
+            className="p-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-cyan-400 transition flex items-center gap-1 text-xs"
+          >
+            {theme === 'light' ? <Moon size={15} className="text-indigo-600" /> : <Sun size={15} className="text-amber-400" />}
+          </button>
+
           {/* Cybernetic Sound Toggle */}
           <button
             onClick={toggleSound}
@@ -206,6 +220,17 @@ export default function Nav() {
             title="Open Command Palette"
           >
             <Search size={16} />
+          </button>
+
+          <button
+            onClick={() => {
+              playClickSound();
+              toggleTheme();
+            }}
+            className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:text-white"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          >
+            {theme === 'light' ? <Moon size={16} className="text-indigo-600" /> : <Sun size={16} className="text-amber-400" />}
           </button>
 
           <button

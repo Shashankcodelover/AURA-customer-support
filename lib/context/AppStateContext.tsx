@@ -28,6 +28,8 @@ export interface Toast {
 }
 
 interface AppStateShape {
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
   capsules: ContextCapsule[];
   resolvedCapsules: ContextCapsule[];
   kbArticles: KBArticle[];
@@ -46,12 +48,43 @@ const AppStateContext = createContext<AppStateShape | null>(null);
 const STORAGE_KEY = 'aura-support-state-v1';
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [capsules, setCapsules] = useState<ContextCapsule[]>([]);
   const [resolvedCapsules, setResolvedCapsules] = useState<ContextCapsule[]>([]);
   const [kbArticles, setKbArticles] = useState<KBArticle[]>(kbSeed as KBArticle[]);
   const [tickets, setTickets] = useState<Ticket[]>(ticketsSeed as Ticket[]);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedTheme = window.localStorage.getItem('aura-theme') as 'light' | 'dark' | null;
+      const initial = savedTheme === 'dark' ? 'dark' : 'light';
+      setTheme(initial);
+      if (initial === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === 'light' ? 'dark' : 'light';
+    setTheme(next);
+    try {
+      window.localStorage.setItem('aura-theme', next);
+      if (next === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    } catch {
+      // ignore
+    }
+  };
 
   function pushToast(message: string, tone: Toast['tone'] = 'info') {
     const id = `toast-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -149,6 +182,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   return (
     <AppStateContext.Provider
       value={{
+        theme,
+        toggleTheme,
         capsules,
         resolvedCapsules,
         kbArticles,

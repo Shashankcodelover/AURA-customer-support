@@ -17,6 +17,8 @@ import {
   ArrowRight,
   Command,
   LucideIcon,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useAppState } from '@/lib/context/AppStateContext';
 import {
@@ -44,7 +46,7 @@ export default function CommandPalette({
   onClose: () => void;
 }) {
   const router = useRouter();
-  const { resetDemo, tickets, capsules, resolvedCapsules } = useAppState();
+  const { resetDemo, tickets, capsules, resolvedCapsules, theme, toggleTheme } = useAppState();
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -171,6 +173,18 @@ export default function CommandPalette({
         const next = !isSoundEnabled();
         setSoundEnabled(next);
         if (next) playSuccessSound();
+        onClose();
+      },
+    },
+    {
+      id: 'act-theme',
+      category: 'System Actions',
+      label: `Switch to ${theme === 'light' ? 'Cybernetic Dark' : 'Executive Light'} Mode`,
+      sublabel: `Toggle between pristine light aesthetic and deep cybernetic obsidian interface`,
+      icon: theme === 'light' ? Moon : Sun,
+      action: () => {
+        toggleTheme();
+        playSuccessSound();
         onClose();
       },
     },
