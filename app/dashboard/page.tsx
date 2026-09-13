@@ -114,17 +114,17 @@ export default function DashboardPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-mono font-medium px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+            <span className="text-xs font-mono font-medium px-2.5 py-0.5 rounded-full bg-[rgba(14,156,116,0.08)] border border-[rgba(14,156,116,0.2)] text-[#0E9C74] dark:bg-[rgba(14,156,116,0.15)] dark:border-[rgba(14,156,116,0.3)] flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0E9C74]" />
               Human-in-the-Loop Operations
             </span>
-            <span className="text-gray-600 text-xs">·</span>
-            <span className="text-xs text-gray-400">EnterPro Supervisor Hub</span>
+            <span className="text-[#6B6E85] dark:text-[#8B8FA3] text-xs">·</span>
+            <span className="text-xs text-[#6B6E85] dark:text-[#8B8FA3]">Operations center</span>
           </div>
-          <h1 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-[#1B1D2A] dark:text-white tracking-tight">
             Agent Operational Dashboard
           </h1>
-          <p className="text-gray-400 text-sm mt-1 max-w-2xl">
+          <p className="text-[#6B6E85] dark:text-[#8B8FA3] text-sm mt-1 max-w-2xl">
             Autonomous escalations synthesized into compact Context Capsules. Zero manual ticket triage or repetitive
             customer re-prompting.
           </p>
@@ -133,14 +133,14 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={handleSeedDemoCapsule}
-            className="px-3.5 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-medium transition flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-2 rounded-xl bg-[rgba(109,74,235,0.08)] border border-[rgba(109,74,235,0.2)] text-[#6D4AEB] hover:bg-[rgba(109,74,235,0.15)] dark:bg-[rgba(109,74,235,0.15)] dark:text-[#B69CFF] dark:hover:bg-[rgba(109,74,235,0.25)] text-xs font-medium transition flex items-center gap-1.5 shadow-sm"
           >
             <Sparkles size={14} /> Seed VIP Enterprise Case
           </button>
           <button
             onClick={resetDemo}
             title="Reset to Baseline Seed"
-            className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-400 hover:text-white transition text-xs"
+            className="p-2 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#6B6E85] hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white transition text-xs"
           >
             <RefreshCw size={14} />
           </button>
@@ -149,47 +149,47 @@ export default function DashboardPage() {
 
       {/* KPI Status Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="glass-card p-4 border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
+        <div className="glass-card glass-hero-stat p-4">
+          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Active Queue</span>
-            <ShieldAlert size={16} className="text-amber-400" />
+            <ShieldAlert size={16} className="text-[#C97A00]" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-display font-bold text-white">{capsules.length}</span>
-            <span className="text-xs text-amber-400/90 font-medium">pending sign-off</span>
+            <span className="text-2xl font-display font-bold text-[#1B1D2A] dark:text-white">{capsules.length}</span>
+            <span className="text-xs text-[#C97A00] font-medium">pending sign-off</span>
           </div>
         </div>
 
-        <div className="glass-card p-4 border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
+        <div className="glass-card p-4">
+          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Resolved Today</span>
-            <CheckCircle2 size={16} className="text-emerald-400" />
+            <CheckCircle2 size={16} className="text-[#0E9C74]" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-display font-bold text-white">{resolvedCapsules.length}</span>
-            <span className="text-xs text-emerald-400/90 font-medium">completed</span>
+            <span className="text-2xl font-display font-bold text-[#1B1D2A] dark:text-white">{resolvedCapsules.length}</span>
+            <span className="text-xs text-[#0E9C74] font-medium">completed</span>
           </div>
         </div>
 
-        <div className="glass-card p-4 border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
+        <div className="glass-card p-4">
+          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Self-Learning KB</span>
-            <BookOpen size={16} className="text-violet-400" />
+            <BookOpen size={16} className="text-[#6D4AEB] dark:text-[#B69CFF]" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-display font-bold text-white">{kbArticles.length}</span>
-            <span className="text-xs text-violet-400/90 font-medium">articles indexed</span>
+            <span className="text-2xl font-display font-bold text-[#1B1D2A] dark:text-white">{kbArticles.length}</span>
+            <span className="text-xs text-[#6D4AEB] dark:text-[#B69CFF] font-medium">articles indexed</span>
           </div>
         </div>
 
-        <div className="glass-card p-4 border border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
+        <div className="glass-card p-4">
+          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Mean Escalation SLA</span>
-            <Clock size={16} className="text-cyan-400" />
+            <Clock size={16} className="text-[#0E9C74]" />
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-display font-bold text-white">1.8m</span>
-            <span className="text-xs text-cyan-400/90 font-medium">94% within target</span>
+            <span className="text-2xl font-display font-bold text-[#1B1D2A] dark:text-white">1.8m</span>
+            <span className="text-xs text-[#0E9C74] font-medium">94% within target</span>
           </div>
         </div>
       </div>
@@ -207,8 +207,8 @@ export default function DashboardPage() {
                   onClick={() => setSelectedFilter(filter)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-medium transition whitespace-nowrap border ${
                     active
-                      ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
-                      : 'bg-white/5 hover:bg-white/10 text-gray-400 border-white/10'
+                      ? 'bg-[rgba(109,74,235,0.1)] text-[#6D4AEB] border-[rgba(109,74,235,0.3)] dark:bg-[rgba(109,74,235,0.2)] dark:text-[#B69CFF] shadow-sm'
+                      : 'bg-[rgba(255,255,255,0.7)] text-[#6B6E85] border-white/90 hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:text-[#8B8FA3] dark:border-white/10 dark:hover:bg-white/5'
                   }`}
                 >
                   {filter === 'All'
@@ -224,34 +224,34 @@ export default function DashboardPage() {
           </div>
 
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9599AD]" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by customer, issue, or cause..."
-              className="w-full sm:w-64 pl-8 pr-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition"
+              className="w-full sm:w-64 pl-8 pr-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#1B1D2A] placeholder-[#9599AD] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white transition"
             />
           </div>
         </div>
 
         {/* Capsule Cards Grid or Empty State */}
         {filteredCapsules.length === 0 ? (
-          <div className="glass-card p-10 text-center space-y-4 border border-dashed border-white/10">
-            <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+          <div className="glass-card p-10 text-center space-y-4 border-dashed border-[rgba(109,74,235,0.2)] dark:border-white/10">
+            <div className="w-14 h-14 rounded-2xl bg-[rgba(109,74,235,0.08)] border border-[rgba(109,74,235,0.2)] flex items-center justify-center mx-auto text-[#6D4AEB] dark:text-[#B69CFF] shadow-sm">
               <Sparkles size={24} />
             </div>
             <div>
-              <h3 className="font-display text-base font-semibold text-white">No Escalated Cases In Queue</h3>
-              <p className="text-gray-400 text-xs max-w-md mx-auto mt-1">
-                Trigger scenarios like <span className="text-cyan-400">Cancel Subscription</span> or{' '}
-                <span className="text-cyan-400">Delayed Shipment</span> on the chat page, or seed a sample VIP enterprise
+              <h3 className="font-display text-base font-semibold text-[#1B1D2A] dark:text-white">No Escalated Cases In Queue</h3>
+              <p className="text-[#6B6E85] dark:text-[#8B8FA3] text-xs max-w-md mx-auto mt-1">
+                Trigger scenarios like <span className="text-[#6D4AEB] dark:text-[#B69CFF]">Cancel Subscription</span> or{' '}
+                <span className="text-[#6D4AEB] dark:text-[#B69CFF]">Delayed Shipment</span> on the chat page, or seed a sample VIP enterprise
                 incident right now.
               </p>
             </div>
             <button
               onClick={handleSeedDemoCapsule}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-95 text-white text-xs font-semibold shadow-[0_0_15px_rgba(6,182,212,0.2)] transition"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] hover:opacity-95 text-[#1B1D2A] text-xs font-semibold shadow-sm transition"
             >
               <Sparkles size={14} /> Pre-populate Enterprise Escalation Capsule
             </button>
@@ -267,18 +267,18 @@ export default function DashboardPage() {
 
       {/* Enterprise Knowledge Base Library */}
       <div className="glass-card p-5 md:p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[rgba(109,74,235,0.08)] dark:border-white/10 pb-4">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="font-display font-semibold text-lg text-white flex items-center gap-2">
-                <BookOpen size={18} className="text-cyan-400" />
+              <h2 className="font-display font-semibold text-lg text-[#1B1D2A] dark:text-white flex items-center gap-2">
+                <BookOpen size={18} className="text-[#6D4AEB] dark:text-[#B69CFF]" />
                 Adaptive Knowledge Base Index
               </h2>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-gray-400 font-mono">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[rgba(109,74,235,0.06)] border border-[rgba(109,74,235,0.15)] text-[#6D4AEB] dark:bg-[rgba(109,74,235,0.15)] dark:text-[#B69CFF] font-mono">
                 {kbArticles.length} entries
               </span>
             </div>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-[#6B6E85] dark:text-[#8B8FA3] mt-1">
               Real-time synthesized organizational memory. Human resolutions auto-draft new articles to permanently prevent
               future escalations.
             </p>
@@ -287,27 +287,27 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setNewArticleModalOpen(true)}
-              className="px-3 py-1.5 rounded-xl bg-violet-500/20 text-violet-300 border border-violet-500/40 text-xs font-semibold flex items-center gap-1.5 hover:bg-violet-500/30 transition shadow-sm whitespace-nowrap"
+              className="px-3 py-1.5 rounded-xl bg-[rgba(109,74,235,0.1)] text-[#6D4AEB] border border-[rgba(109,74,235,0.25)] dark:bg-[rgba(109,74,235,0.2)] dark:text-[#B69CFF] text-xs font-semibold flex items-center gap-1.5 hover:bg-[rgba(109,74,235,0.15)] transition shadow-sm whitespace-nowrap"
             >
               <Edit3 size={13} /> Author Article
             </button>
 
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9599AD]" />
               <input
                 type="text"
                 value={kbSearch}
                 onChange={(e) => setKbSearch(e.target.value)}
                 placeholder="Search knowledge base..."
-                className="w-full sm:w-60 pl-8 pr-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition"
+                className="w-full sm:w-60 pl-8 pr-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#1B1D2A] placeholder-[#9599AD] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white transition"
               />
             </div>
           </div>
         </div>
 
         {resolvedCapsules.length > 0 && (
-          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs">
-            <span className="w-2 h-2 rounded-full bg-violet-400 animate-ping" />
+          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[rgba(109,74,235,0.06)] border border-[rgba(109,74,235,0.15)] text-[#6D4AEB] dark:bg-[rgba(109,74,235,0.15)] dark:text-[#B69CFF] text-xs">
+            <span className="w-2 h-2 rounded-full bg-[#6D4AEB] dark:bg-[#B69CFF]" />
             <span>
               Autonomous flywheel active: <strong>{resolvedCapsules.length}</strong> new case(s) resolved and synthesized into vector storage during this active session.
             </span>
@@ -321,22 +321,22 @@ export default function DashboardPage() {
               <div
                 key={a.id}
                 onClick={() => setExpandedKb(isExpanded ? null : a.id)}
-                className="p-3.5 rounded-xl bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-slate-300 shadow-2xs dark:bg-black/20 dark:hover:bg-black/40 dark:border-white/5 dark:hover:border-white/10 cursor-pointer transition flex flex-col justify-between group"
+                className="p-3.5 rounded-xl bg-[rgba(255,255,255,0.8)] border border-white/90 hover:border-[rgba(109,74,235,0.2)] shadow-sm dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:hover:border-[rgba(109,74,235,0.3)] cursor-pointer transition flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 dark:bg-cyan-500/10 dark:text-cyan-300 dark:border-cyan-500/20 font-semibold">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[rgba(109,74,235,0.06)] text-[#6D4AEB] border border-[rgba(109,74,235,0.15)] dark:bg-[rgba(109,74,235,0.15)] dark:text-[#B69CFF] font-semibold">
                       {a.category}
                     </span>
-                    <span className="text-slate-400 group-hover:text-blue-600 dark:text-gray-500 dark:group-hover:text-cyan-400 transition">
+                    <span className="text-[#9599AD] group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition">
                       {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </span>
                   </div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-white transition line-clamp-1">
+                  <h4 className="text-sm font-bold text-[#1B1D2A] dark:text-white group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition line-clamp-1">
                     {a.title}
                   </h4>
                   <p
-                    className={`text-xs text-slate-600 dark:text-gray-400 mt-1 leading-relaxed ${
+                    className={`text-xs text-[#6B6E85] dark:text-[#8B8FA3] mt-1 leading-relaxed ${
                       isExpanded ? 'line-clamp-none' : 'line-clamp-2'
                     }`}
                   >
@@ -344,9 +344,9 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1 mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
+                <div className="flex flex-wrap gap-1 mt-3 pt-2 border-t border-[rgba(109,74,235,0.08)] dark:border-white/5">
                   {a.tags?.map((t) => (
-                    <span key={t} className="text-[10px] text-slate-500 dark:text-gray-500 font-mono">
+                    <span key={t} className="text-[10px] text-[#9599AD] font-mono">
                       #{t}
                     </span>
                   ))}
@@ -359,20 +359,20 @@ export default function DashboardPage() {
 
       {/* Author KB Article Modal */}
       {newArticleModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <form
             onSubmit={handleCreateArticle}
-            className="glass-card p-6 max-w-xl w-full bg-[#0a0f1d] border border-violet-500/40 space-y-4 animate-fadeIn"
+            className="glass-card p-6 max-w-xl w-full bg-white dark:bg-[#0F1424] border-[rgba(109,74,235,0.3)] space-y-4 animate-fadeIn"
           >
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center justify-between border-b border-[rgba(109,74,235,0.08)] dark:border-white/10 pb-3">
               <div className="flex items-center gap-2">
-                <Edit3 size={18} className="text-violet-400" />
-                <h3 className="font-bold text-white text-base">Author Knowledge Base Article</h3>
+                <Edit3 size={18} className="text-[#6D4AEB] dark:text-[#B69CFF]" />
+                <h3 className="font-bold text-[#1B1D2A] dark:text-white text-base">Author Knowledge Base Article</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setNewArticleModalOpen(false)}
-                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white"
+                className="p-1.5 rounded-lg bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#6B6E85] hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white"
               >
                 <X size={16} />
               </button>
@@ -380,24 +380,24 @@ export default function DashboardPage() {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="text-gray-400 mb-1 block">Article Title</label>
+                <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Article Title</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. AWS Multi-Region Gateway Timeout Policy"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-violet-400 text-xs"
+                  className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-gray-400 mb-1 block">Category Domain</label>
+                  <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Category Domain</label>
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value as any)}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-violet-400 text-xs"
+                    className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition"
                   >
                     <option value="Billing">Billing</option>
                     <option value="Technical">Technical</option>
@@ -407,41 +407,41 @@ export default function DashboardPage() {
                 </div>
 
                 <div>
-                  <label className="text-gray-400 mb-1 block">Search Tags (comma-separated)</label>
+                  <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Search Tags (comma-separated)</label>
                   <input
                     type="text"
                     placeholder="gateway, retry, refund"
                     value={newTags}
                     onChange={(e) => setNewTags(e.target.value)}
-                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-violet-400 text-xs"
+                    className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-gray-400 mb-1 block">Standard Operating Procedure / Resolution Body</label>
+                <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Standard Operating Procedure / Resolution Body</label>
                 <textarea
                   required
                   rows={4}
                   placeholder="Document the exact technical diagnosis and step-by-step remediation protocol..."
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-violet-400 text-xs resize-none"
+                  className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl p-3 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs resize-none transition"
                 />
               </div>
             </div>
 
-            <div className="pt-2 border-t border-white/10 flex justify-end gap-2">
+            <div className="pt-2 border-t border-[rgba(109,74,235,0.08)] dark:border-white/10 flex justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setNewArticleModalOpen(false)}
-                className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white text-xs"
+                className="px-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#6B6E85] hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white text-xs transition"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-600 hover:opacity-95 text-white font-semibold text-xs flex items-center gap-1.5 shadow-lg shadow-violet-500/25"
+                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] hover:opacity-95 text-[#1B1D2A] font-semibold text-xs flex items-center gap-1.5 shadow-sm"
               >
                 <PlusCircle size={13} /> Save Article to Memory
               </button>

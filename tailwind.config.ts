@@ -10,10 +10,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy: {
-          950: '#0B1120',
-          900: '#0F172A',
-          800: '#141E33',
+        prism: {
+          canvas: '#F6F6FB',
+          text: '#1B1D2A',
+          muted: '#6B6E85',
+          footnote: '#9599AD',
+        },
+        mint: {
+          DEFAULT: '#0E9C74',
+          50: '#ECFDF5',
+          100: '#D1FAE5',
+          200: '#A7F3D0',
+          400: '#34D399',
+          500: '#0E9C74',
+          600: '#059669',
+        },
+        'violet-accent': {
+          DEFAULT: '#6D4AEB',
+          50: '#EDE9FE',
+          100: '#DDD6FE',
+          200: '#C4B5FD',
+          400: '#A78BFA',
+          500: '#6D4AEB',
+          600: '#5B21B6',
+        },
+        'amber-accent': {
+          DEFAULT: '#C97A00',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          400: '#FBBF24',
+          500: '#C97A00',
         },
       },
       fontFamily: {
@@ -25,14 +51,9 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'translateY(4px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        glow: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(62,198,255,0.12)' },
-          '50%': { boxShadow: '0 0 32px rgba(139,92,246,0.30)' },
-        },
       },
       animation: {
         fadeIn: 'fadeIn 0.4s ease-out',
-        glow: 'glow 3s ease-in-out infinite',
       },
     },
   },

@@ -4,9 +4,9 @@ import { useAppState } from '@/lib/context/AppStateContext';
 import { X } from 'lucide-react';
 
 const TONE_STYLES: Record<string, string> = {
-  success: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-100',
-  warning: 'border-amber-500/30 bg-amber-500/10 text-amber-100',
-  info: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-100',
+  success: 'border-[rgba(14,156,116,0.3)] bg-[rgba(14,156,116,0.06)] text-[#0E9C74] dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100',
+  warning: 'border-[rgba(201,122,0,0.3)] bg-[rgba(201,122,0,0.06)] text-[#C97A00] dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100',
+  info: 'border-[rgba(109,74,235,0.3)] bg-[rgba(109,74,235,0.06)] text-[#6D4AEB] dark:border-violet-500/30 dark:bg-violet-500/10 dark:text-violet-100',
 };
 
 export default function ToastStack() {

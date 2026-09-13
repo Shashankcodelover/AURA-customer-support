@@ -67,51 +67,38 @@ export default function Nav() {
     if (nextState) playClickSound();
   };
 
-  const resolvedCount = tickets.filter((t) => t.status === 'Resolved').length;
-  const rate = tickets.length ? Math.round((resolvedCount / tickets.length) * 100) : 63;
-
   return (
-    <header className="border-b border-white/10 sticky top-0 z-50 bg-[#060913]/85 backdrop-blur-xl transition-all">
+    <header className="border-b border-white/90 dark:border-white/8 sticky top-0 z-50 bg-[rgba(255,255,255,0.68)] dark:bg-[rgba(15,20,35,0.85)] backdrop-blur-[22px] transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
         {/* Brand & Telemetry */}
         <div className="flex items-center gap-3">
           <Link href="/" onClick={() => playClickSound()} className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 via-indigo-500 to-purple-600 p-[1.5px] shadow-md shadow-indigo-500/15 group-hover:shadow-indigo-500/30 transition">
-              <div className="w-full h-full bg-slate-900 rounded-[10px] flex items-center justify-center">
-                <Sparkles className="text-cyan-400 group-hover:scale-110 transition" size={17} />
-              </div>
+            <div className="w-9 h-9 rounded-[9px] bg-[linear-gradient(135deg,#6EE7C8,#B69CFF_55%,#FFAFD1)] shadow-md shadow-[#6D4AEB]/15 group-hover:shadow-[#6D4AEB]/30 transition flex items-center justify-center">
+              <Sparkles className="text-white group-hover:scale-110 transition" size={17} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display text-xl font-extrabold tracking-tight text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:via-slate-200 dark:to-cyan-200">
+                <span className="font-display text-xl font-extrabold tracking-tight text-[#1B1D2A] dark:text-white">
                   AURA
                 </span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-500/10 text-cyan-800 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-500/30">
-                  v2.5 AI
-                </span>
               </div>
-              <p className="text-[10px] text-slate-500 dark:text-gray-400 tracking-wider hidden sm:block font-medium">
-                AUTONOMOUS UNIFIED RESOLUTION AGENT
+              <p className="text-[10px] text-[#6B6E85] dark:text-[#8B8FA3] tracking-wider hidden sm:block font-medium">
+                Autonomous Support Intelligence
               </p>
             </div>
           </Link>
 
           {/* Engine Status Pill */}
-          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 text-[11px] text-slate-600 dark:text-gray-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-medium text-slate-700 dark:text-gray-200">Qwen 2.5 Multi-Agent Engine</span>
-            <span className="text-slate-300 dark:text-gray-600">|</span>
-            <span className="text-slate-500 dark:text-gray-400">EnterPro Graph</span>
-            <span className="text-slate-300 dark:text-gray-600">|</span>
-            <span className="flex items-center gap-1 text-[10px] font-mono font-semibold text-cyan-700 dark:text-cyan-400">
-              <Wifi size={11} /> {ping}ms
+          <div className="hidden lg:flex items-center">
+            <span className="live-pill flex items-center gap-1.5 text-xs text-[#6B6E85] dark:text-[#8B8FA3] px-3 py-1 bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] rounded-full border border-white/90 dark:border-white/8">
+              <span className="live-dot w-1.5 h-1.5 rounded-full bg-[#0E9C74]" /> Live system
             </span>
           </div>
         </div>
 
         {/* Center/Right Nav Links */}
         <div className="hidden md:flex items-center gap-2">
-          <nav className="flex items-center gap-1 bg-slate-100/80 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 p-1 rounded-xl">
+          <nav className="flex items-center gap-1 bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(15,20,35,0.5)] border border-white/90 dark:border-white/8 p-1 rounded-xl">
             {links.map((l) => {
               const Icon = l.icon;
               const isActive = pathname === l.href;
@@ -122,14 +109,14 @@ export default function Nav() {
                   onClick={() => playClickSound()}
                   className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
                     isActive
-                      ? 'bg-slate-900 text-white shadow-sm dark:bg-gradient-to-r dark:from-cyan-500/20 dark:to-violet-500/20 dark:text-cyan-200 dark:border dark:border-cyan-400/40'
-                      : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/[0.05]'
+                      ? 'bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(255,255,255,0.1)] text-[#1B1D2A] dark:text-[#E8EAF0] shadow-[0_2px_10px_rgba(109,74,235,0.08)] dark:shadow-none'
+                      : 'text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0] hover:bg-[rgba(255,255,255,0.4)] dark:hover:bg-[rgba(255,255,255,0.05)]'
                   }`}
                 >
-                  <Icon size={14} className={isActive ? 'text-cyan-400' : 'text-slate-500 dark:text-gray-500'} />
+                  <Icon size={14} className={isActive ? 'text-[#6D4AEB]' : 'text-[#6B6E85] dark:text-[#8B8FA3]'} />
                   {l.label}
                   {l.href === '/dashboard' && capsules.length > 0 && (
-                    <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500 text-white dark:bg-amber-500/20 dark:text-amber-300 border border-amber-600 dark:border-amber-500/40 font-mono font-bold">
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[#C97A00] text-white border border-[#C97A00] font-mono font-bold">
                       {capsules.length}
                     </span>
                   )}
@@ -144,29 +131,15 @@ export default function Nav() {
               playClickSound();
               setPaletteOpen(true);
             }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.03] hover:bg-slate-50 dark:hover:bg-white/[0.08] hover:border-slate-300 dark:hover:border-cyan-500/30 text-slate-600 dark:text-gray-400 hover:text-slate-950 dark:hover:text-white transition text-xs shadow-2xs group"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/90 dark:border-white/8 bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] hover:border-[rgba(109,74,235,0.3)] dark:hover:border-[#6D4AEB]/50 text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0] transition text-xs shadow-[0_8px_30px_rgba(109,74,235,0.07)] dark:shadow-none group"
             title="Open Omnibar Command Palette (Ctrl+K)"
           >
-            <Search size={13} className="text-slate-500 dark:text-cyan-400 group-hover:scale-110 transition" />
-            <span className="hidden lg:inline text-slate-700 dark:text-gray-300 font-medium">Quick Actions</span>
-            <kbd className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-mono text-slate-600 dark:text-cyan-300">
+            <Search size={13} className="text-[#6B6E85] dark:text-[#8B8FA3] group-hover:text-[#6D4AEB] transition" />
+            <span className="hidden lg:inline text-[#1B1D2A] dark:text-[#E8EAF0] font-medium">Quick Actions</span>
+            <kbd className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-[rgba(255,255,255,0.5)] dark:bg-white/5 border border-white/90 dark:border-white/8 text-[10px] font-mono text-[#6B6E85] dark:text-[#8B8FA3]">
               <Command size={10} className="hidden lg:inline" /> K
             </kbd>
           </button>
-
-          {/* Performance Pill */}
-          <div className="hidden xl:flex items-center gap-3 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/[0.02] text-xs text-slate-600 dark:text-gray-400">
-            <div className="flex items-center gap-1.5">
-              <Activity size={13} className="text-emerald-600 dark:text-emerald-400" />
-              <span>
-                Auto-Resolve: <strong className="text-emerald-700 dark:text-emerald-300">{rate}%</strong>
-              </span>
-            </div>
-            <span className="text-slate-300 dark:text-gray-700">·</span>
-            <span>
-              MTTR: <strong className="text-cyan-700 dark:text-cyan-300">1.4s</strong>
-            </span>
-          </div>
 
           {/* Light / Dark Mode Toggle */}
           <button
@@ -174,20 +147,20 @@ export default function Nav() {
               playClickSound();
               toggleTheme();
             }}
-            title={theme === 'light' ? 'Switch to Cybernetic Dark Mode' : 'Switch to Executive Light Mode'}
-            className="p-2 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-700 dark:text-gray-300 transition flex items-center gap-1 text-xs shadow-2xs"
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            className="p-2 rounded-xl border border-white/90 dark:border-white/8 bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] hover:bg-[rgba(255,255,255,0.9)] dark:hover:bg-[rgba(255,255,255,0.1)] text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0] transition flex items-center gap-1 text-xs shadow-[0_8px_30px_rgba(109,74,235,0.07)] dark:shadow-none"
           >
-            {theme === 'light' ? <Moon size={15} className="text-indigo-600" /> : <Sun size={15} className="text-amber-400" />}
+            {theme === 'light' ? <Moon size={15} className="text-[#6D4AEB]" /> : <Sun size={15} className="text-[#C97A00]" />}
           </button>
 
-          {/* Cybernetic Sound Toggle */}
+          {/* Sound Toggle */}
           <button
             onClick={toggleSound}
-            title={soundOn ? 'Mute Cybernetic Audio' : 'Enable Cybernetic Audio'}
-            className={`p-2 rounded-xl border transition flex items-center gap-1 text-xs shadow-2xs ${
+            title={soundOn ? 'Mute Audio' : 'Enable Audio'}
+            className={`p-2 rounded-xl border transition flex items-center gap-1 text-xs shadow-[0_8px_30px_rgba(109,74,235,0.07)] dark:shadow-none ${
               soundOn
-                ? 'bg-cyan-50 dark:bg-cyan-500/10 border-cyan-200 dark:border-cyan-500/30 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100'
-                : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-500 dark:text-gray-500 hover:text-slate-900 dark:hover:text-white'
+                ? 'bg-[#0E9C74]/10 border-[#0E9C74]/30 text-[#0E9C74]'
+                : 'bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] border-white/90 dark:border-white/8 text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0]'
             }`}
           >
             {soundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
@@ -202,7 +175,7 @@ export default function Nav() {
               }
             }}
             title="Reset demo state"
-            className="p-2 rounded-xl text-slate-600 dark:text-gray-400 hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 border border-transparent hover:border-slate-200 dark:hover:border-white/10 transition flex items-center gap-1 text-xs"
+            className="p-2 rounded-xl text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0] bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(15,20,35,0.5)] hover:bg-[rgba(255,255,255,0.8)] dark:hover:bg-[rgba(255,255,255,0.1)] border border-transparent hover:border-white/90 dark:hover:border-white/8 transition flex items-center gap-1 text-xs"
           >
             <RotateCcw size={15} />
             <span className="hidden xl:inline text-[11px] font-medium">Reset</span>
@@ -216,7 +189,7 @@ export default function Nav() {
               playClickSound();
               setPaletteOpen(true);
             }}
-            className="p-2 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-cyan-600 dark:text-cyan-400 hover:text-slate-950 dark:hover:text-white"
+            className="p-2 rounded-lg bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] border border-white/90 dark:border-white/8 text-[#6D4AEB] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0]"
             title="Open Command Palette"
           >
             <Search size={16} />
@@ -227,22 +200,22 @@ export default function Nav() {
               playClickSound();
               toggleTheme();
             }}
-            className="p-2 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white"
+            className="p-2 rounded-lg bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] border border-white/90 dark:border-white/8 text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0]"
             title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
           >
-            {theme === 'light' ? <Moon size={16} className="text-indigo-600" /> : <Sun size={16} className="text-amber-400" />}
+            {theme === 'light' ? <Moon size={16} className="text-[#6D4AEB]" /> : <Sun size={16} className="text-[#C97A00]" />}
           </button>
 
           <button
             onClick={toggleSound}
-            className="p-2 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white"
+            className="p-2 rounded-lg bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] border border-white/90 dark:border-white/8 text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0]"
           >
-            {soundOn ? <Volume2 size={16} className="text-cyan-600 dark:text-cyan-400" /> : <VolumeX size={16} />}
+            {soundOn ? <Volume2 size={16} className="text-[#0E9C74]" /> : <VolumeX size={16} />}
           </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-gray-300 hover:text-slate-950 dark:hover:text-white"
+            className="p-2 rounded-lg bg-[rgba(255,255,255,0.7)] dark:bg-[rgba(15,20,35,0.72)] border border-white/90 dark:border-white/8 text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0]"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -251,7 +224,7 @@ export default function Nav() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden px-4 pt-2 pb-4 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-[#060913]/95 space-y-1 shadow-lg">
+        <div className="md:hidden px-4 pt-2 pb-4 border-t border-white/90 dark:border-white/8 bg-[rgba(255,255,255,0.95)] dark:bg-[rgba(15,20,35,0.95)] backdrop-blur-[22px] space-y-1 shadow-lg">
           {links.map((l) => {
             const Icon = l.icon;
             const isActive = pathname === l.href;
@@ -265,11 +238,11 @@ export default function Nav() {
                 }}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition ${
                   isActive
-                    ? 'bg-slate-900 text-white dark:bg-cyan-500/15 dark:text-cyan-300 dark:border dark:border-cyan-500/30'
-                    : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100 dark:text-gray-400 dark:hover:text-white'
+                    ? 'bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(255,255,255,0.1)] text-[#1B1D2A] dark:text-[#E8EAF0] border border-white/90 dark:border-white/8'
+                    : 'text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-[#E8EAF0] hover:bg-[rgba(255,255,255,0.5)] dark:hover:bg-white/5'
                 }`}
               >
-                <Icon size={16} className={isActive ? 'text-cyan-400' : 'text-slate-500 dark:text-gray-400'} />
+                <Icon size={16} className={isActive ? 'text-[#6D4AEB]' : 'text-[#6B6E85] dark:text-[#8B8FA3]'} />
                 {l.label}
               </Link>
             );
@@ -280,7 +253,7 @@ export default function Nav() {
               resetDemo();
               setMobileMenuOpen(false);
             }}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#E11D48] dark:text-[#E11D48] hover:bg-[#E11D48]/10"
           >
             <RotateCcw size={16} /> Reset Demo State
           </button>

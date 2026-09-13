@@ -32,7 +32,7 @@ export default function ConfidenceGauge({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="rgba(255, 255, 255, 0.08)"
+            stroke="rgba(109, 74, 235, 0.1)"
             strokeWidth={strokeWidth}
             fill="transparent"
           />
@@ -63,13 +63,13 @@ export default function ConfidenceGauge({
             {pct}%
           </span>
           {!isSmall && (
-            <span className="text-[9px] uppercase tracking-wider text-gray-400 font-semibold mt-0.5">
+            <span className="text-[9px] uppercase tracking-wider text-[#6B6E85] dark:text-gray-400 font-semibold mt-0.5">
               {isHigh ? 'High' : isMed ? 'Review' : 'Risk'}
             </span>
           )}
         </div>
       </div>
-      {!isSmall && <span className="text-[10px] text-gray-400 font-medium mt-1">Confidence</span>}
+      {!isSmall && <span className="text-[10px] text-[#6B6E85] dark:text-gray-400 font-medium mt-1">Confidence</span>}
     </div>
   );
 }

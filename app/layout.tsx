@@ -11,7 +11,7 @@ const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space
 export const metadata: Metadata = {
   title: 'AURA — Autonomous Support Intelligence',
   description:
-    'A multi-agent AI customer support system that investigates root causes, resolves issues automatically, and hands complex cases to humans with complete context. Powered by Qwen, orchestrated like EnterPro workflows.',
+    'A multi-agent AI customer support system that investigates root causes, resolves issues automatically, and hands complex cases to humans with complete context.',
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
@@ -43,10 +43,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-body min-h-screen transition-colors duration-200`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-body min-h-screen transition-colors duration-300`}>
+        {/* Prism Glass — Ambient Pastel Orb Washes */}
+        <div className="orb orb-mint" />
+        <div className="orb orb-violet" />
+        <div className="orb orb-pink" />
+
         <AppStateProvider>
-          <Nav />
-          <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
+          <div className="relative z-[1]">
+            <Nav />
+            <main className="max-w-[1100px] mx-auto px-4 sm:px-6 py-7">{children}</main>
+          </div>
           <ToastStack />
         </AppStateProvider>
       </body>
