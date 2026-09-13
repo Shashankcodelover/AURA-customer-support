@@ -1,58 +1,158 @@
-'use client';
+﻿'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sparkles, RotateCcw } from 'lucide-react';
+import { Sparkles, RotateCcw, Menu, X, Activity, Layers, MessageSquare, LayoutDashboard, LineChart, GitGraph } from 'lucide-react';
 import { useAppState } from '@/lib/context/AppStateContext';
 
 const links = [
-  { href: '/', label: 'Customer Chat' },
-  { href: '/dashboard', label: 'Agent Dashboard' },
-  { href: '/analytics', label: 'Churn Radar' },
-  { href: '/workflow', label: 'Workflow' },
+  { href: '/', label: 'Customer Chat', icon: MessageSquare },
+  { href: '/dashboard', label: 'Agent Dashboard', icon: LayoutDashboard },
+  { href: '/analytics', label: 'Churn Radar', icon: LineChart },
+  { href: '/workflow', label: 'Workflow DAG', icon: GitGraph },
 ];
 
 export default function Nav() {
   const pathname = usePathname();
-  const { resetDemo } = useAppState();
+  const { resetDemo, tickets, capsules } = useAppState();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const resolvedCount = tickets.filter(t => t.status === 'Resolved').length;
+  const rate = tickets.length ? Math.round((resolvedCount / tickets.length) * 100) : 63;
 
   return (
-    <header className="border-b border-white/10 sticky top-0 z-50 bg-navy-950/80 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-2">
-          <Sparkles className="text-cyan-400" size={22} />
-          <span className="font-display text-xl font-bold tracking-tight">AURA</span>
-          <span className="hidden sm:inline text-[11px] px-2 py-1 rounded-full border border-white/10 text-gray-400 ml-2">
-            Qwen + EnterPro Orchestration
-          </span>
+    <header className="border-b border-white/10 sticky top-0 z-50 bg-[#060913]/85 backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
+        
+        {/* Brand & Telemetry */}
+        <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 via-indigo-500 to-purple-600 p-[1px] shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition">
+              <div className="w-full h-full bg-[#090d1a] rounded-[11px] flex items-center justify-center">
+                <Sparkles className="text-cyan-400 group-hover:scale-110 transition" size={18} />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-display text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-cyan-200 bg-clip-text text-transparent">
+                  AURA
+                </span>
+                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+                  v2.5 AI
+                </span>
+              </div>
+              <p className="text-[10px] text-gray-400 tracking-wider hidden sm:block">
+                AUTONOMOUS UNIFIED RESOLUTION AGENT
+              </p>
+            </div>
+          </Link>
+
+          {/* Engine Status Pill */}
+          <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-[11px] text-gray-300">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Qwen 2.5 Multi-Agent Engine</span>
+            <span className="text-gray-600">|</span>
+            <span className="text-gray-400">EnterPro Graph Active</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <nav className="flex gap-1">
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={`px-3 py-1.5 rounded-lg text-sm transition ${
-                  pathname === l.href ? 'bg-white/10 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                {l.label}
-              </Link>
-            ))}
+
+        {/* Center/Right Nav Links */}
+        <div className="hidden md:flex items-center gap-2">
+          <nav className="flex items-center gap-1 bg-white/[0.03] border border-white/10 p-1 rounded-xl">
+            {links.map((l) => {
+              const Icon = l.icon;
+              const isActive = pathname === l.href;
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition ${
+                    isActive
+                      ? 'bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-white border border-cyan-400/40 shadow-sm shadow-cyan-500/20'
+                      : 'text-gray-400 hover:text-white hover:bg-white/[0.05]'
+                  }`}
+                >
+                  <Icon size={14} className={isActive ? 'text-cyan-400' : 'text-gray-500'} />
+                  {l.label}
+                  {l.href === '/dashboard' && capsules.length > 0 && (
+                    <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                      {capsules.length}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </nav>
+
+          {/* Performance Pill */}
+          <div className="hidden xl:flex items-center gap-3 px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.02] text-xs text-gray-400">
+            <div className="flex items-center gap-1.5">
+              <Activity size={13} className="text-emerald-400" />
+              <span>Auto-Resolve: <strong className="text-emerald-300">{rate}%</strong></span>
+            </div>
+            <span className="text-gray-700">·</span>
+            <span>MTTR: <strong className="text-cyan-300">1.4s</strong></span>
+          </div>
+
+          {/* Reset Demo Button */}
           <button
             onClick={() => {
-              if (window.confirm('Reset the demo? This clears escalated cases and the session knowledge base.')) {
+              if (window.confirm('Reset AURA demo state? Clears active session tickets and knowledge base.')) {
                 resetDemo();
               }
             }}
             title="Reset demo state"
-            className="p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition"
+            className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 border border-transparent hover:border-white/10 transition flex items-center gap-1 text-xs"
           >
-            <RotateCcw size={16} />
+            <RotateCcw size={15} />
+            <span className="hidden xl:inline text-[11px]">Reset</span>
           </button>
         </div>
+
+        {/* Mobile Hamburger */}
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:text-white"
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden px-4 pt-2 pb-4 border-t border-white/10 bg-[#060913]/95 space-y-1">
+          {links.map((l) => {
+            const Icon = l.icon;
+            const isActive = pathname === l.href;
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition ${
+                  isActive ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                <Icon size={16} />
+                {l.label}
+              </Link>
+            );
+          })}
+          <button
+            onClick={() => {
+              resetDemo();
+              setMobileMenuOpen(false);
+            }}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10"
+          >
+            <RotateCcw size={16} /> Reset Demo State
+          </button>
+        </div>
+      )}
     </header>
   );
 }
