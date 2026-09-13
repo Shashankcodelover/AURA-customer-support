@@ -321,22 +321,22 @@ export default function DashboardPage() {
               <div
                 key={a.id}
                 onClick={() => setExpandedKb(isExpanded ? null : a.id)}
-                className="p-3.5 rounded-xl bg-black/20 hover:bg-black/40 border border-white/5 hover:border-white/10 cursor-pointer transition flex flex-col justify-between group"
+                className="p-3.5 rounded-xl bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-slate-300 shadow-2xs dark:bg-black/20 dark:hover:bg-black/40 dark:border-white/5 dark:hover:border-white/10 cursor-pointer transition flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                    <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 dark:bg-cyan-500/10 dark:text-cyan-300 dark:border-cyan-500/20 font-semibold">
                       {a.category}
                     </span>
-                    <span className="text-gray-500 text-xs group-hover:text-cyan-400 transition">
+                    <span className="text-slate-400 group-hover:text-blue-600 dark:text-gray-500 dark:group-hover:text-cyan-400 transition">
                       {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </span>
                   </div>
-                  <h4 className="text-sm font-medium text-gray-100 group-hover:text-white transition line-clamp-1">
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-white transition line-clamp-1">
                     {a.title}
                   </h4>
                   <p
-                    className={`text-xs text-gray-400 mt-1 leading-relaxed ${
+                    className={`text-xs text-slate-600 dark:text-gray-400 mt-1 leading-relaxed ${
                       isExpanded ? 'line-clamp-none' : 'line-clamp-2'
                     }`}
                   >
@@ -344,9 +344,9 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1 mt-3 pt-2 border-t border-white/5">
+                <div className="flex flex-wrap gap-1 mt-3 pt-2 border-t border-slate-100 dark:border-white/5">
                   {a.tags?.map((t) => (
-                    <span key={t} className="text-[10px] text-gray-500 font-mono">
+                    <span key={t} className="text-[10px] text-slate-500 dark:text-gray-500 font-mono">
                       #{t}
                     </span>
                   ))}

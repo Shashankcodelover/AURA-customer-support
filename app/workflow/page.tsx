@@ -390,39 +390,39 @@ export default function WorkflowPage() {
                       setMobileWorkflowView('inspector');
                     }
                   }}
-                  className={`p-3.5 rounded-xl border transition-all duration-300 cursor-pointer relative overflow-hidden ${
+                  className={`p-3.5 rounded-xl border transition-all duration-200 cursor-pointer relative overflow-hidden ${
                     isSelected
-                      ? `bg-slate-900 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.25)] ring-1 ring-cyan-400/50`
-                      : 'bg-black/30 border-white/5 hover:border-white/20 hover:bg-black/50'
-                  } ${isSimActive ? 'ring-2 ring-emerald-400 animate-pulse' : ''}`}
+                      ? `bg-blue-50/70 border-blue-500 shadow-sm ring-1 ring-blue-500/30 dark:bg-slate-900 dark:border-cyan-400 dark:shadow-[0_0_20px_rgba(6,182,212,0.25)] dark:ring-1 dark:ring-cyan-400/50`
+                      : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 dark:bg-black/30 dark:border-white/5 dark:hover:border-white/20 dark:hover:bg-black/50'
+                  } ${isSimActive ? 'ring-2 ring-emerald-500 animate-pulse' : ''}`}
                 >
                   {isSimActive && (
-                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-500 animate-shimmer" />
+                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 via-cyan-400 to-violet-500 animate-shimmer" />
                   )}
 
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center font-mono text-xs text-gray-400">
+                      <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center font-mono text-xs text-slate-700 dark:text-gray-400 font-semibold">
                         {index + 1}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-semibold text-white">{node.name}</h3>
+                          <h3 className="text-sm font-bold text-slate-900 dark:text-white">{node.name}</h3>
                           <span className={`text-[10px] px-2 py-0.5 rounded-full border ${config.badge}`}>
                             {config.label}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-400 font-mono mt-0.5">#{node.id}</p>
+                        <p className="text-xs text-slate-500 dark:text-gray-400 font-mono mt-0.5">#{node.id}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 self-end sm:self-center">
                       {node.engine && (
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-violet-500/10 border border-violet-500/20 text-violet-300 font-mono">
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-300 font-mono font-medium">
                           {node.engine}
                         </span>
                       )}
-                      <ArrowRight size={14} className={isSelected ? 'text-cyan-400' : 'text-gray-600'} />
+                      <ArrowRight size={14} className={isSelected ? 'text-blue-600 dark:text-cyan-400' : 'text-slate-400 dark:text-gray-600'} />
                     </div>
                   </div>
 
