@@ -7,6 +7,9 @@ import {
   ArrowRight,
   GitBranch,
   Play,
+  Pause,
+  SkipForward,
+  SkipBack,
   CheckCircle2,
   Cpu,
   Layers,
@@ -17,7 +20,9 @@ import {
   Copy,
   Check,
   RotateCcw,
+  Gauge,
 } from 'lucide-react';
+import { playStepSound, playSuccessSound, playClickSound } from '@/lib/audio/soundEffects';
 
 const TYPE_CONFIG: Record<
   string,
@@ -65,6 +70,8 @@ export default function WorkflowPage() {
   const [selectedNodeId, setSelectedNodeId] = useState<string>('router');
   const [activeSimStep, setActiveSimStep] = useState<number>(-1);
   const [isSimulating, setIsSimulating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [simSpeed, setSimSpeed] = useState<number>(1);
   const [copied, setCopied] = useState(false);
 
   const selectedNode = def.nodes.find((n) => n.id === selectedNodeId) || def.nodes[0];
@@ -81,26 +88,80 @@ export default function WorkflowPage() {
     'self_learning_loop',
   ];
 
-  const runSimulation = () => {
-    if (isSimulating) return;
+  // Auto-advance loop when simulating and not paused
+  useEffect(() => {
+    if (!isSimulating || isPaused) return;
+
+    const delay = Math.round(900 / simSpeed);
+    const timer = setTimeout(() => {
+      if (activeSimStep < simSequence.length - 1) {
+        const nextStep = activeSimStep + 1;
+        setActiveSimStep(nextStep);
+        setSelectedNodeId(simSequence[nextStep]);
+        playStepSound();
+      } else {
+        playSuccessSound();
+        setIsSimulating(false);
+        setIsPaused(false);
+        setTimeout(() => {
+          setActiveSimStep(-1);
+        }, 1200);
+      }
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [isSimulating, isPaused, activeSimStep, simSpeed, simSequence]);
+
+  const startSimulation = () => {
+    playClickSound();
     setIsSimulating(true);
+    setIsPaused(false);
     setActiveSimStep(0);
     setSelectedNodeId(simSequence[0]);
+    playStepSound();
+  };
 
-    let step = 0;
-    const interval = setInterval(() => {
-      step += 1;
-      if (step < simSequence.length) {
-        setActiveSimStep(step);
-        setSelectedNodeId(simSequence[step]);
-      } else {
-        clearInterval(interval);
-        setTimeout(() => {
-          setIsSimulating(false);
-          setActiveSimStep(-1);
-        }, 1500);
-      }
-    }, 900);
+  const togglePause = () => {
+    playClickSound();
+    setIsPaused((prev) => !prev);
+  };
+
+  const stepForward = () => {
+    playClickSound();
+    if (!isSimulating) {
+      setIsSimulating(true);
+      setIsPaused(true);
+      setActiveSimStep(0);
+      setSelectedNodeId(simSequence[0]);
+      playStepSound();
+      return;
+    }
+    if (activeSimStep < simSequence.length - 1) {
+      const nextStep = activeSimStep + 1;
+      setActiveSimStep(nextStep);
+      setSelectedNodeId(simSequence[nextStep]);
+      playStepSound();
+    } else {
+      playSuccessSound();
+    }
+  };
+
+  const stepBackward = () => {
+    playClickSound();
+    if (activeSimStep > 0) {
+      const prevStep = activeSimStep - 1;
+      setActiveSimStep(prevStep);
+      setSelectedNodeId(simSequence[prevStep]);
+      playStepSound();
+    }
+  };
+
+  const resetSimulation = () => {
+    playClickSound();
+    setIsSimulating(false);
+    setIsPaused(false);
+    setActiveSimStep(-1);
+    setSelectedNodeId('router');
   };
 
   const handleCopyManifest = () => {
@@ -131,27 +192,73 @@ export default function WorkflowPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={runSimulation}
-            disabled={isSimulating}
-            className={`px-4 py-2 rounded-xl font-semibold text-xs transition flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.25)] ${
-              isSimulating
-                ? 'bg-cyan-500/30 border border-cyan-400 text-cyan-200'
-                : 'bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-95 text-white'
-            }`}
-          >
-            {isSimulating ? (
-              <>
-                <RotateCcw size={14} className="animate-spin text-cyan-300" />
-                Simulating Step {activeSimStep + 1}/{simSequence.length}...
-              </>
+        {/* Interactive Debugger Controls & Speed Selector */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Speed Selector */}
+          <div className="flex items-center bg-black/40 border border-white/10 rounded-xl p-1 text-xs">
+            <span className="px-2 text-gray-500 font-mono text-[11px] hidden sm:inline">Speed:</span>
+            {[0.5, 1, 2].map((speed) => (
+              <button
+                key={speed}
+                onClick={() => setSimSpeed(speed)}
+                className={`px-2 py-0.5 rounded-lg font-mono font-medium transition ${
+                  simSpeed === speed
+                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {speed}x
+              </button>
+            ))}
+          </div>
+
+          {/* Stepper Buttons (Prev, Play/Pause, Next, Reset) */}
+          <div className="flex items-center gap-1.5 bg-black/40 border border-white/10 rounded-xl p-1">
+            <button
+              onClick={stepBackward}
+              disabled={activeSimStep <= 0}
+              className="p-1.5 rounded-lg text-gray-400 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
+              title="Previous Step"
+            >
+              <SkipBack size={15} />
+            </button>
+
+            {!isSimulating ? (
+              <button
+                onClick={startSimulation}
+                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-95 text-white font-semibold text-xs transition flex items-center gap-1.5 shadow-[0_0_16px_rgba(6,182,212,0.3)]"
+              >
+                <Play size={13} fill="currentColor" /> Simulate Flow
+              </button>
             ) : (
-              <>
-                <Play size={14} /> Simulate Pipeline Flow
-              </>
+              <button
+                onClick={togglePause}
+                className="px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-400 text-cyan-200 font-semibold text-xs transition flex items-center gap-1.5"
+              >
+                {isPaused ? <Play size={13} fill="currentColor" /> : <Pause size={13} />}
+                {isPaused ? 'Resume' : `Step ${activeSimStep + 1}/${simSequence.length}`}
+              </button>
             )}
-          </button>
+
+            <button
+              onClick={stepForward}
+              disabled={activeSimStep >= simSequence.length - 1 && isSimulating}
+              className="p-1.5 rounded-lg text-gray-400 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
+              title="Next Step"
+            >
+              <SkipForward size={15} />
+            </button>
+
+            {isSimulating && (
+              <button
+                onClick={resetSimulation}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-rose-400 transition"
+                title="Reset Simulation"
+              >
+                <RotateCcw size={14} />
+              </button>
+            )}
+          </div>
 
           <button
             onClick={handleCopyManifest}
@@ -189,6 +296,45 @@ export default function WorkflowPage() {
           </span>
         </div>
       </div>
+
+      {/* Live Simulation Debugger Banner */}
+      {isSimulating && (
+        <div className="p-3.5 rounded-xl border border-cyan-500/40 bg-gradient-to-r from-cyan-950/60 via-slate-900/80 to-cyan-950/60 flex flex-wrap items-center justify-between gap-3 shadow-[0_0_20px_rgba(6,182,212,0.15)] animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <span className="flex h-3 w-3 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold text-cyan-300">
+                  STEP {activeSimStep + 1} OF {simSequence.length}:
+                </span>
+                <span className="text-xs font-semibold text-white">
+                  {selectedNode.name}
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-gray-300">
+                  {selectedNode.id}
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-400 mt-0.5">
+                {isPaused
+                  ? 'Simulation paused. Use Step Forward / Backward to inspect graph propagation.'
+                  : `Propagating execution context at ${simSpeed}x playback rate...`}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-mono">
+            <span className="px-2 py-1 rounded bg-black/40 border border-white/10 text-cyan-300">
+              Type: {selectedNode.type}
+            </span>
+            <span className="px-2 py-1 rounded bg-black/40 border border-white/10 text-emerald-300">
+              Latency: ~{Math.round(220 / simSpeed)}ms
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Visual Interactive Graph & Node Inspector Grid */}
       <div className="grid lg:grid-cols-12 gap-6 items-start">
