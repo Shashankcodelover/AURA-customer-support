@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useMemo, useState, ChangeEvent, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -8,7 +8,23 @@ import AgentNetworkDiagram from '@/components/AgentNetworkDiagram';
 import EvidencePanel from '@/components/EvidencePanel';
 import ConfidenceGauge from '@/components/ConfidenceGauge';
 import { InvestigationResult, ReasoningStep, ConversationTurn } from '@/lib/types';
-import { Send, Sparkles, Paperclip, X, MessageSquareText, RotateCcw, ArrowRight, CheckCircle2, AlertTriangle, ShieldCheck, Zap, Bot } from 'lucide-react';
+import {
+  Send,
+  Sparkles,
+  Paperclip,
+  X,
+  MessageSquareText,
+  RotateCcw,
+  ArrowRight,
+  CheckCircle2,
+  AlertTriangle,
+  ShieldCheck,
+  Zap,
+  Bot,
+  Copy,
+  Check,
+  Download,
+} from 'lucide-react';
 
 const SCENARIOS = [
   {
@@ -49,6 +65,13 @@ const SCENARIOS = [
   },
 ];
 
+const SUGGESTIONS = [
+  'Where is my order ORD-4522?',
+  'I see two identical charges on my credit card',
+  'Password reset link redirects to error page',
+  'Need SLA reimbursement for downtime outage',
+];
+
 export default function Home() {
   const { addCapsule, addTicketRecord, pushToast, tickets } = useAppState();
   const [input, setInput] = useState('');
@@ -59,7 +82,8 @@ export default function Home() {
   const [revealedSteps, setRevealedSteps] = useState<ReasoningStep[]>([]);
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [conversation, setConversation] = useState<ConversationTurn[]>([]);
-  
+  const [copiedDossier, setCopiedDossier] = useState(false);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const stats = useMemo(() => {
@@ -157,22 +181,42 @@ export default function Home() {
     setAttachedImage(null);
   }
 
+  function handleCopyDossier() {
+    if (!result) return;
+    navigator.clipboard.writeText(JSON.stringify(result, null, 2));
+    setCopiedDossier(true);
+    pushToast('📋 Investigation dossier copied to clipboard', 'info');
+    setTimeout(() => setCopiedDossier(false), 2000);
+  }
+
+  function handleDownloadDossier() {
+    if (!result) return;
+    const data = JSON.stringify(result, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `aura-dossier-${result.category.toLowerCase()}-${Date.now()}.json`;
+    a.click();
+    pushToast('📥 Downloaded investigation audit JSON', 'success');
+  }
+
   return (
     <div className="space-y-8 pb-12">
-      
       {/* Hero Section */}
       <section className="text-center space-y-4 pt-4 pb-2 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-semibold text-cyan-300">
           <Sparkles size={13} />
           <span>AUTONOMOUS MULTI-AGENT RESOLUTION ENGINE</span>
         </div>
-        
+
         <h1 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
           Support that <span className="gradient-text">investigates</span>, not just replies.
         </h1>
-        
+
         <p className="text-gray-400 text-sm sm:text-base leading-relaxed">
-          AURA coordinates specialized agent nodes across billing, logistics, auth, and knowledge bases to uncover systemic root causes in under 2 seconds.
+          AURA coordinates specialized agent nodes across billing, logistics, auth, and knowledge bases to uncover systemic
+          root causes in under 2 seconds.
         </p>
       </section>
 
@@ -323,6 +367,23 @@ export default function Home() {
             )}
           </button>
         </div>
+
+        {/* Dynamic Suggestion Pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pt-1 text-[11px] text-gray-400 border-t border-white/5">
+          <span className="text-gray-500 shrink-0">Try asking:</span>
+          {SUGGESTIONS.map((sug) => (
+            <button
+              key={sug}
+              onClick={() => {
+                setInput(sug);
+                inputRef.current?.focus();
+              }}
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-cyan-300 transition whitespace-nowrap border border-white/5"
+            >
+              &ldquo;{sug}&rdquo;
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Live Investigation Pipeline Panel */}
@@ -354,19 +415,25 @@ export default function Home() {
 
       {/* Resolution & Context Capsule Showcase Card */}
       {showFinal && result && (
-        <div className={`glass-card p-6 border-2 animate-fadeIn ${
-          result.decision === 'auto-resolve' ? 'border-emerald-500/50 bg-emerald-950/20' : 'border-amber-500/50 bg-amber-950/20'
-        }`}>
+        <div
+          className={`glass-card p-6 border-2 animate-fadeIn ${
+            result.decision === 'auto-resolve'
+              ? 'border-emerald-500/50 bg-emerald-950/20'
+              : 'border-amber-500/50 bg-amber-950/20'
+          }`}
+        >
           <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between">
             <div className="flex items-center gap-4">
               <ConfidenceGauge value={result.confidence} />
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
-                    result.decision === 'auto-resolve' 
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                      : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                  }`}>
+                  <span
+                    className={`text-xs px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
+                      result.decision === 'auto-resolve'
+                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                        : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                    }`}
+                  >
                     {result.decision === 'auto-resolve' ? '✔ AUTO-RESOLVED' : '🤝 HUMAN ESCALATION REQUIRED'}
                   </span>
                   <span className="text-xs text-gray-400 font-mono">Category: {result.category}</span>
@@ -375,15 +442,33 @@ export default function Home() {
               </div>
             </div>
 
-            {result.decision !== 'auto-resolve' && (
-              <Link
-                href="/dashboard"
-                className="px-4 py-2 rounded-xl bg-amber-500 text-black font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition shrink-0"
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleCopyDossier}
+                title="Copy Investigation JSON"
+                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition text-xs flex items-center gap-1"
               >
-                <span>View Capsule on Dashboard</span>
-                <ArrowRight size={13} />
-              </Link>
-            )}
+                {copiedDossier ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+              </button>
+
+              <button
+                onClick={handleDownloadDossier}
+                title="Download Investigation Audit Dossier"
+                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white transition text-xs flex items-center gap-1"
+              >
+                <Download size={14} />
+              </button>
+
+              {result.decision !== 'auto-resolve' && (
+                <Link
+                  href="/dashboard"
+                  className="px-4 py-2 rounded-xl bg-amber-500 text-black font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/20 hover:bg-amber-400 transition shrink-0"
+                >
+                  <span>View Capsule on Dashboard</span>
+                  <ArrowRight size={13} />
+                </Link>
+              )}
+            </div>
           </div>
 
           <div className="mt-4 pt-4 border-t border-white/10 text-sm leading-relaxed text-gray-200 bg-black/20 p-3.5 rounded-xl">
@@ -394,7 +479,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
