@@ -1,0 +1,44 @@
+[
+  {
+    "id": "kb-01",
+    "title": "Duplicate Subscription Charges: Causes & Refund Policy",
+    "category": "Billing",
+    "content": "Duplicate charges typically occur when a payment webhook is retried after a timeout, even though the original charge succeeded. Refunds for confirmed duplicates are auto-approved under $50 and processed within 3-5 business days.",
+    "tags": ["billing", "refund", "duplicate-charge", "webhook"]
+  },
+  {
+    "id": "kb-02",
+    "title": "Delayed Shipments: Carrier Escalation Steps",
+    "category": "Order",
+    "content": "If a carrier scan is missing for more than 48 hours, open a trace request with the carrier and proactively notify the customer with a revised ETA and a goodwill discount code for delays beyond 5 days.",
+    "tags": ["order", "shipping", "delay", "carrier"]
+  },
+  {
+    "id": "kb-03",
+    "title": "Login Failures After Password Reset",
+    "category": "Technical",
+    "content": "Some users cannot log in immediately after a password reset due to a stale session token cached client-side. Clearing the session cache or waiting 60 seconds for token invalidation resolves most cases.",
+    "tags": ["technical", "login", "password", "session"]
+  },
+  {
+    "id": "kb-04",
+    "title": "Account Ownership Transfer Process",
+    "category": "Account",
+    "content": "Ownership transfers require identity verification from both parties and are completed within 24 hours of approval. Enterprise accounts require an additional compliance check.",
+    "tags": ["account", "ownership", "transfer"]
+  },
+  {
+    "id": "kb-05",
+    "title": "Invoice Tax Breakdown Requests",
+    "category": "Billing",
+    "content": "Invoices missing a tax breakdown can be reissued instantly from the billing portal under 'Download Detailed Invoice'. No manual intervention is required for standard accounts.",
+    "tags": ["billing", "invoice", "tax"]
+  },
+  {
+    "id": "kb-06",
+    "title": "Subscription Cancellation & Retention Flow",
+    "category": "Billing",
+    "content": "Cancellation requests should first surface the reason for leaving. Offer a pause option or a 20% retention discount for Pro/Enterprise tiers before finalizing cancellation.",
+    "tags": ["billing", "cancellation", "retention"]
+  }
+]

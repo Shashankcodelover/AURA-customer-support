@@ -1,0 +1,7 @@
+[
+  { "id": "cust-101", "name": "Ananya Rao", "email": "ananya.rao@example.com", "tier": "Pro", "joinDate": "2024-02-14" },
+  { "id": "cust-102", "name": "Marcus Chen", "email": "marcus.chen@example.com", "tier": "Free", "joinDate": "2023-11-02" },
+  { "id": "cust-103", "name": "Priya Nair", "email": "priya.nair@example.com", "tier": "Enterprise", "joinDate": "2022-06-30" },
+  { "id": "cust-104", "name": "Daniel Osei", "email": "daniel.osei@example.com", "tier": "Pro", "joinDate": "2024-08-19" },
+  { "id": "cust-105", "name": "Wei Lin", "email": "wei.lin@example.com", "tier": "Free", "joinDate": "2025-01-05" }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "TCK-901",
+    "customerId": "cust-101",
+    "category": "Billing",
+    "subject": "Charged twice for subscription renewal",
+    "status": "Escalated",
+    "date": "2026-09-04",
+    "sentiment": "Negative",
+    "resolutionSummary": "Refund pending manual review."
+  },
+  {
+    "id": "TCK-902",
+    "customerId": "cust-102",
+    "category": "Order",
+    "subject": "Order stuck in transit",
+    "status": "Open",
+    "date": "2026-08-30",
+    "sentiment": "Negative"
+  },
+  {
+    "id": "TCK-903",
+    "customerId": "cust-105",
+    "category": "Technical",
+    "subject": "Cannot log in after password reset",
+    "status": "Resolved",
+    "date": "2026-08-20",
+    "sentiment": "Neutral",
+    "resolutionSummary": "Cleared cached session token."
+  },
+  {
+    "id": "TCK-904",
+    "customerId": "cust-103",
+    "category": "Account",
+    "subject": "Requesting account owner transfer",
+    "status": "Resolved",
+    "date": "2026-07-11",
+    "sentiment": "Positive",
+    "resolutionSummary": "Ownership transferred after verification."
+  },
+  {
+    "id": "TCK-905",
+    "customerId": "cust-104",
+    "category": "Billing",
+    "subject": "Invoice missing tax breakdown",
+    "status": "Resolved",
+    "date": "2026-08-02",
+    "sentiment": "Neutral",
+    "resolutionSummary": "Reissued invoice with tax details."
+  },
+  {
+    "id": "TCK-906",
+    "customerId": "cust-101",
+    "category": "Billing",
+    "subject": "Asked about duplicate charge policy",
+    "status": "Resolved",
+    "date": "2026-06-18",
+    "sentiment": "Neutral",
+    "resolutionSummary": "Explained refund SLA."
+  },
+  {
+    "id": "TCK-907",
+    "customerId": "cust-102",
+    "category": "Technical",
+    "subject": "App crashing on checkout",
+    "status": "Escalated",
+    "date": "2026-08-25",
+    "sentiment": "Negative"
+  },
+  {
+    "id": "TCK-908",
+    "customerId": "cust-105",
+    "category": "Order",
+    "subject": "Wrong item delivered",
+    "status": "Resolved",
+    "date": "2026-07-29",
+    "sentiment": "Negative",
+    "resolutionSummary": "Replacement shipped free of charge."
+  }
+]

@@ -1,0 +1,82 @@
+{
+  "workflow": "aura-customer-support-pipeline",
+  "version": "1.0",
+  "description": "Multi-agent customer support workflow. Written as a portable node graph so it can be registered directly with an enterprise workflow/orchestration platform (e.g. EnterPro) - the runtime in lib/agents/investigate.ts executes this exact graph locally today, and lib/workflow/workflowEngine.ts is the single seam where a real platform SDK call replaces the local executor.",
+  "trigger": {
+    "type": "webhook",
+    "event": "support.message.received"
+  },
+  "nodes": [
+    {
+      "id": "router",
+      "type": "agent",
+      "name": "Router Agent",
+      "engine": "qwen",
+      "action": "classify_intent_urgency_sentiment",
+      "next": ["specialist_dispatch"]
+    },
+    {
+      "id": "specialist_dispatch",
+      "type": "branch",
+      "name": "Specialist Dispatch",
+      "branches": {
+        "Billing": "billing_agent",
+        "Technical": "technical_agent",
+        "Order": "order_agent",
+        "Account": "account_agent"
+      }
+    },
+    { "id": "billing_agent", "type": "agent", "name": "Billing Agent", "engine": "qwen", "action": "investigate_case", "reads": ["orders", "tickets", "knowledge_base"], "next": ["reasoning"] },
+    { "id": "technical_agent", "type": "agent", "name": "Technical Agent", "engine": "qwen", "action": "investigate_case", "reads": ["tickets", "knowledge_base"], "next": ["reasoning"] },
+    { "id": "order_agent", "type": "agent", "name": "Order Agent", "engine": "qwen", "action": "investigate_case", "reads": ["orders", "tickets", "knowledge_base"], "next": ["reasoning"] },
+    { "id": "account_agent", "type": "agent", "name": "Account Agent", "engine": "qwen", "action": "investigate_case", "reads": ["tickets", "knowledge_base"], "next": ["reasoning"] },
+    {
+      "id": "reasoning",
+      "type": "agent",
+      "name": "Reasoning / Root-Cause Engine",
+      "engine": "qwen",
+      "action": "synthesize_root_cause",
+      "next": ["escalation_decision"]
+    },
+    {
+      "id": "escalation_decision",
+      "type": "decision",
+      "name": "Escalation Intelligence",
+      "condition": "confidence >= 0.7 AND urgency != 'High' AND order_value <= 100",
+      "onTrue": "auto_resolve",
+      "onFalse": "build_context_capsule"
+    },
+    {
+      "id": "auto_resolve",
+      "type": "action",
+      "name": "Execute Resolution",
+      "engine": "qwen",
+      "action": "generate_resolution_message_and_notify_customer"
+    },
+    {
+      "id": "build_context_capsule",
+      "type": "action",
+      "name": "Build Context Capsule",
+      "action": "package_case_history_sentiment_and_recommendation",
+      "next": ["human_handoff"]
+    },
+    {
+      "id": "human_handoff",
+      "type": "human_task",
+      "name": "Agent Dashboard Review",
+      "next": ["self_learning_loop"]
+    },
+    {
+      "id": "self_learning_loop",
+      "type": "action",
+      "name": "Draft Knowledge Base Article",
+      "engine": "qwen",
+      "action": "draft_kb_article_from_resolution"
+    }
+  ],
+  "deployment": {
+    "target": "enterpro",
+    "status": "pending-sponsor-credentials",
+    "note": "Swap this block for the real EnterPro deployment manifest once sponsor credentials/SDK docs are available (see lib/workflow/workflowEngine.ts). Until then, this exact graph is executed by the hand-written equivalent in lib/agents/investigate.ts and the app is deployed via Vercel."
+  }
+}
