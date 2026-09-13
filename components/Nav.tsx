@@ -16,9 +16,12 @@ import {
   Volume2,
   VolumeX,
   Wifi,
+  Search,
+  Command,
 } from 'lucide-react';
 import { useAppState } from '@/lib/context/AppStateContext';
 import { isSoundEnabled, setSoundEnabled, playClickSound } from '@/lib/audio/soundEffects';
+import CommandPalette from './CommandPalette';
 
 const links = [
   { href: '/', label: 'Customer Chat', icon: MessageSquare },
@@ -31,6 +34,7 @@ export default function Nav() {
   const pathname = usePathname();
   const { resetDemo, tickets, capsules } = useAppState();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
   const [ping, setPing] = useState(24);
 
@@ -39,7 +43,19 @@ export default function Nav() {
     const interval = setInterval(() => {
       setPing(Math.floor(18 + Math.random() * 12));
     }, 4000);
-    return () => clearInterval(interval);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const toggleSound = () => {
@@ -120,6 +136,22 @@ export default function Nav() {
             })}
           </nav>
 
+          {/* Quick Action Omnibar Trigger */}
+          <button
+            onClick={() => {
+              playClickSound();
+              setPaletteOpen(true);
+            }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] hover:border-cyan-500/30 text-gray-400 hover:text-white transition text-xs group"
+            title="Open Omnibar Command Palette (Ctrl+K)"
+          >
+            <Search size={13} className="text-cyan-400 group-hover:scale-110 transition" />
+            <span className="hidden lg:inline text-gray-300">Quick Actions</span>
+            <kbd className="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] font-mono text-cyan-300">
+              <Command size={10} className="hidden lg:inline" /> K
+            </kbd>
+          </button>
+
           {/* Performance Pill */}
           <div className="hidden xl:flex items-center gap-3 px-3 py-1.5 rounded-xl border border-white/10 bg-white/[0.02] text-xs text-gray-400">
             <div className="flex items-center gap-1.5">
@@ -163,8 +195,19 @@ export default function Nav() {
           </button>
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Hamburger & Actions */}
         <div className="md:hidden flex items-center gap-2">
+          <button
+            onClick={() => {
+              playClickSound();
+              setPaletteOpen(true);
+            }}
+            className="p-2 rounded-lg bg-white/5 border border-white/10 text-cyan-400 hover:text-white"
+            title="Open Command Palette"
+          >
+            <Search size={16} />
+          </button>
+
           <button
             onClick={toggleSound}
             className="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-300 hover:text-white"
@@ -216,6 +259,9 @@ export default function Nav() {
           </button>
         </div>
       )}
+
+      {/* Omnibar Command Palette Modal */}
+      <CommandPalette isOpen={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </header>
   );
 }
