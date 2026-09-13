@@ -12,6 +12,14 @@ export const metadata: Metadata = {
   title: 'AURA — Autonomous Support Intelligence',
   description:
     'A multi-agent AI customer support system that investigates root causes, resolves issues automatically, and hands complex cases to humans with complete context. Powered by Qwen, orchestrated like EnterPro workflows.',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
