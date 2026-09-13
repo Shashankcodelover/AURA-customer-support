@@ -73,6 +73,7 @@ export default function WorkflowPage() {
   const [isPaused, setIsPaused] = useState(false);
   const [simSpeed, setSimSpeed] = useState<number>(1);
   const [copied, setCopied] = useState(false);
+  const [mobileWorkflowView, setMobileWorkflowView] = useState<'graph' | 'inspector'>('graph');
 
   const selectedNode = def.nodes.find((n) => n.id === selectedNodeId) || def.nodes[0];
 
@@ -336,10 +337,36 @@ export default function WorkflowPage() {
         </div>
       )}
 
+      {/* Mobile DAG View Switcher (Eliminates mobile scroll fatigue) */}
+      <div className="lg:hidden flex items-center bg-black/40 border border-white/10 rounded-xl p-1 text-xs gap-1">
+        <button
+          onClick={() => setMobileWorkflowView('graph')}
+          className={`flex-1 py-2 rounded-lg font-medium transition text-center flex items-center justify-center gap-1.5 ${
+            mobileWorkflowView === 'graph'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <GitBranch size={13} className="text-cyan-400" />
+          <span>DAG Nodes ({def.nodes.length})</span>
+        </button>
+        <button
+          onClick={() => setMobileWorkflowView('inspector')}
+          className={`flex-1 py-2 rounded-lg font-medium transition text-center flex items-center justify-center gap-1.5 ${
+            mobileWorkflowView === 'inspector'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+              : 'text-gray-400 hover:text-white'
+          }`}
+        >
+          <Sparkles size={13} className="text-violet-400" />
+          <span className="truncate">Inspector: {selectedNode.name}</span>
+        </button>
+      </div>
+
       {/* Visual Interactive Graph & Node Inspector Grid */}
       <div className="grid lg:grid-cols-12 gap-6 items-start">
         {/* Left (7 cols): Interactive Visual Node Graph */}
-        <div className="lg:col-span-7 glass-card p-5 md:p-6 space-y-4 border border-white/5">
+        <div className={`lg:col-span-7 glass-card p-5 md:p-6 space-y-4 border border-white/5 ${mobileWorkflowView === 'graph' ? 'block' : 'hidden lg:block'}`}>
           <div className="flex items-center justify-between border-b border-white/5 pb-3">
             <h2 className="font-display font-semibold text-white flex items-center gap-2">
               <GitBranch size={16} className="text-cyan-400" />
@@ -357,7 +384,12 @@ export default function WorkflowPage() {
               return (
                 <div
                   key={node.id}
-                  onClick={() => setSelectedNodeId(node.id)}
+                  onClick={() => {
+                    setSelectedNodeId(node.id);
+                    if (window.innerWidth < 1024) {
+                      setMobileWorkflowView('inspector');
+                    }
+                  }}
                   className={`p-3.5 rounded-xl border transition-all duration-300 cursor-pointer relative overflow-hidden ${
                     isSelected
                       ? `bg-slate-900 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.25)] ring-1 ring-cyan-400/50`
@@ -421,7 +453,7 @@ export default function WorkflowPage() {
         </div>
 
         {/* Right (5 cols): Deep Node Execution Inspector */}
-        <div className="lg:col-span-5 glass-card p-5 md:p-6 space-y-5 sticky top-24 border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 via-slate-950 to-black shadow-2xl">
+        <div className={`lg:col-span-5 glass-card p-5 md:p-6 space-y-5 sticky top-24 border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 via-slate-950 to-black shadow-2xl ${mobileWorkflowView === 'inspector' ? 'block' : 'hidden lg:block'}`}>
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
             <div>
               <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold flex items-center gap-1.5">

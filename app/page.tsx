@@ -104,6 +104,7 @@ export default function Home() {
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [conversation, setConversation] = useState<ConversationTurn[]>([]);
   const [copiedDossier, setCopiedDossier] = useState(false);
+  const [mobileTab, setMobileTab] = useState<'steps' | 'graph' | 'evidence' | 'resolution'>('steps');
 
   // Custom Scenario Studio State
   const [studioOpen, setStudioOpen] = useState(false);
@@ -142,6 +143,7 @@ export default function Home() {
     setShowFinal(false);
     setResult(null);
     setRevealedSteps([]);
+    setMobileTab('steps');
     try {
       const body = payload.scenarioId ? payload : { ...payload, history: conversation };
       const res = await fetch('/api/investigate', {
@@ -169,6 +171,7 @@ export default function Home() {
 
   function handleTimelineComplete(finished: InvestigationResult) {
     setShowFinal(true);
+    setMobileTab('resolution');
     if (finished.contextCapsule) {
       playAlertSound();
       addCapsule(finished.contextCapsule);
@@ -264,6 +267,22 @@ export default function Home() {
           AURA coordinates specialized agent nodes across billing, logistics, auth, and knowledge bases to uncover systemic
           root causes in under 2 seconds.
         </p>
+
+        {/* Live System Capabilities Ticker */}
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            4 Autonomous Nodes Online
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-xs font-semibold text-cyan-400">
+            <Zap size={12} />
+            1.4s Parallel Consensus
+          </span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-xs font-semibold text-violet-400">
+            <ShieldCheck size={12} />
+            Context Capsule Ready
+          </span>
+        </div>
       </section>
 
       {/* System Pulse Banner */}
@@ -392,7 +411,7 @@ export default function Home() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="flex overflow-x-auto pb-2.5 snap-x snap-mandatory gap-3 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 -mx-1 px-1">
           {SCENARIOS.map((s) => (
             <button
               key={s.id}
@@ -403,7 +422,7 @@ export default function Home() {
                 setAttachedImage(null);
                 runCase({ scenarioId: s.id });
               }}
-              className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between gap-3 transition-all duration-300 relative overflow-hidden ${
+              className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between gap-3 transition-all duration-300 relative overflow-hidden min-w-[260px] sm:min-w-0 snap-start shrink-0 sm:shrink ${
                 activeScenario === s.id
                   ? 'border-cyan-400 bg-cyan-500/15 shadow-[0_0_20px_rgba(6,182,212,0.3)] scale-[1.02]'
                   : 'border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20'
@@ -411,16 +430,16 @@ export default function Home() {
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="text-sm font-bold text-white">{s.label}</span>
-                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${s.badgeColor}`}>
+                  <span className="text-sm font-bold text-white truncate">{s.label}</span>
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border shrink-0 ${s.badgeColor}`}>
                     {s.badge}
                   </span>
                 </div>
                 <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">{s.message}</p>
               </div>
 
-              <div className="text-[10px] text-cyan-300 font-medium flex items-center gap-1">
-                <span>{s.expected}</span>
+              <div className="text-[10px] text-cyan-500 dark:text-cyan-300 font-medium flex items-center gap-1 mt-1">
+                <span className="truncate">{s.expected}</span>
                 <ArrowRight size={10} className="shrink-0" />
               </div>
             </button>
@@ -535,7 +554,7 @@ export default function Home() {
 
       {/* Live Investigation Pipeline Panel */}
       {(loading || result) && (
-        <div className="glass-card p-6 space-y-6 border-cyan-500/30 animate-glow">
+        <div className="glass-card p-4 sm:p-6 space-y-4 sm:space-y-6 border-cyan-500/30 animate-glow">
           <div className="flex items-center justify-between border-b border-white/5 pb-3">
             <div className="flex items-center gap-2 text-sm font-bold text-white">
               <Bot size={18} className="text-cyan-400" />
@@ -547,23 +566,122 @@ export default function Home() {
             </div>
           </div>
 
-          <AgentNetworkDiagram revealedSteps={revealedSteps} />
-          <EvidencePanel revealedSteps={revealedSteps} />
+          {/* Mobile Adaptive View Switcher (Eliminates Huge Scrolling) */}
+          <div className="md:hidden flex items-center bg-black/40 border border-white/10 rounded-xl p-1 text-xs gap-1 overflow-x-auto">
+            <button
+              onClick={() => setMobileTab('steps')}
+              className={`flex-1 py-1.5 px-2 rounded-lg font-medium transition whitespace-nowrap text-center ${
+                mobileTab === 'steps'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              🧠 Steps ({revealedSteps.length})
+            </button>
+            <button
+              onClick={() => setMobileTab('graph')}
+              className={`flex-1 py-1.5 px-2 rounded-lg font-medium transition whitespace-nowrap text-center ${
+                mobileTab === 'graph'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              🕸️ Graph
+            </button>
+            <button
+              onClick={() => setMobileTab('evidence')}
+              className={`flex-1 py-1.5 px-2 rounded-lg font-medium transition whitespace-nowrap text-center ${
+                mobileTab === 'evidence'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              📑 Evidence
+            </button>
+            {showFinal && result && (
+              <button
+                onClick={() => setMobileTab('resolution')}
+                className={`flex-1 py-1.5 px-2 rounded-lg font-medium transition whitespace-nowrap text-center ${
+                  mobileTab === 'resolution'
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                    : 'text-emerald-400 hover:text-emerald-300'
+                }`}
+              >
+                🎯 Solution
+              </button>
+            )}
+          </div>
 
-          {result && (
-            <ReasoningTimeline
-              steps={result.steps}
-              onProgress={setRevealedSteps}
-              onComplete={() => handleTimelineComplete(result)}
-            />
-          )}
+          {/* Desktop Expansive Cockpit View */}
+          <div className="hidden md:block space-y-6">
+            <AgentNetworkDiagram revealedSteps={revealedSteps} />
+            <EvidencePanel revealedSteps={revealedSteps} />
+            {result && (
+              <ReasoningTimeline
+                steps={result.steps}
+                onProgress={setRevealedSteps}
+                onComplete={() => handleTimelineComplete(result)}
+              />
+            )}
+          </div>
+
+          {/* Mobile Single-Screen Focused View */}
+          <div className="md:hidden">
+            {mobileTab === 'graph' && <AgentNetworkDiagram revealedSteps={revealedSteps} />}
+            {mobileTab === 'evidence' && <EvidencePanel revealedSteps={revealedSteps} />}
+            {mobileTab === 'steps' && result && (
+              <ReasoningTimeline
+                steps={result.steps}
+                onProgress={setRevealedSteps}
+                onComplete={() => handleTimelineComplete(result)}
+              />
+            )}
+            {mobileTab === 'resolution' && showFinal && result && (
+              <div
+                className={`p-4 rounded-xl border-2 animate-fadeIn space-y-3 ${
+                  result.decision === 'auto-resolve'
+                    ? 'border-emerald-500/50 bg-emerald-950/20'
+                    : 'border-amber-500/50 bg-amber-950/20'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <ConfidenceGauge value={result.confidence} />
+                  <div>
+                    <span
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border ${
+                        result.decision === 'auto-resolve'
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                          : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                      }`}
+                    >
+                      {result.decision === 'auto-resolve' ? '✔ AUTO-RESOLVED' : '🤝 ESCALATED'}
+                    </span>
+                    <h3 className="text-sm font-bold text-white mt-1">{result.rootCause}</h3>
+                  </div>
+                </div>
+                <div className="text-xs text-gray-200 bg-black/30 p-3 rounded-lg leading-relaxed">
+                  <div className="text-[10px] uppercase font-bold text-gray-400 mb-1">Dispatched Message:</div>
+                  <p>{result.resolutionMessage}</p>
+                </div>
+                {result.decision !== 'auto-resolve' && (
+                  <Link
+                    href="/dashboard"
+                    className="w-full py-2.5 rounded-xl bg-amber-500 text-black font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg"
+                  >
+                    <span>Inspect Context Capsule on Dashboard</span>
+                    <ArrowRight size={13} />
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Resolution & Context Capsule Showcase Card */}
+      {/* Desktop Resolution & Context Capsule Showcase Card */}
       {showFinal && result && (
         <div
-          className={`glass-card p-6 border-2 animate-fadeIn ${
+          className={`hidden md:block glass-card p-6 border-2 animate-fadeIn ${
             result.decision === 'auto-resolve'
               ? 'border-emerald-500/50 bg-emerald-950/20'
               : 'border-amber-500/50 bg-amber-950/20'
