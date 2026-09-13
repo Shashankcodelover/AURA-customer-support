@@ -16,15 +16,44 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
+  X,
+  Edit3,
 } from 'lucide-react';
 import { ContextCapsule } from '@/lib/types';
 
 export default function DashboardPage() {
-  const { capsules, resolvedCapsules, kbArticles, resolveCapsule, addCapsule, resetDemo } = useAppState();
+  const { capsules, resolvedCapsules, kbArticles, resolveCapsule, addCapsule, resetDemo, addKbArticle } =
+    useAppState();
   const [selectedFilter, setSelectedFilter] = useState<'All' | 'High' | 'Enterprise' | 'Billing'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [kbSearch, setKbSearch] = useState('');
   const [expandedKb, setExpandedKb] = useState<string | null>(null);
+
+  // New Article Authoring State
+  const [newArticleModalOpen, setNewArticleModalOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const [newCategory, setNewCategory] = useState<'Billing' | 'Technical' | 'Order' | 'Account'>('Billing');
+  const [newContent, setNewContent] = useState('');
+  const [newTags, setNewTags] = useState('');
+
+  const handleCreateArticle = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTitle.trim() || !newContent.trim()) return;
+    addKbArticle({
+      id: `kb-manual-${Date.now()}`,
+      title: newTitle.trim(),
+      category: newCategory,
+      content: newContent.trim(),
+      tags: newTags
+        .split(',')
+        .map((t) => t.trim().toLowerCase())
+        .filter(Boolean),
+    });
+    setNewTitle('');
+    setNewContent('');
+    setNewTags('');
+    setNewArticleModalOpen(false);
+  };
 
   // Filtered capsules
   const filteredCapsules = useMemo(() => {
@@ -255,15 +284,24 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-            <input
-              type="text"
-              value={kbSearch}
-              onChange={(e) => setKbSearch(e.target.value)}
-              placeholder="Search knowledge base..."
-              className="w-full sm:w-60 pl-8 pr-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition"
-            />
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setNewArticleModalOpen(true)}
+              className="px-3 py-1.5 rounded-xl bg-violet-500/20 text-violet-300 border border-violet-500/40 text-xs font-semibold flex items-center gap-1.5 hover:bg-violet-500/30 transition shadow-sm whitespace-nowrap"
+            >
+              <Edit3 size={13} /> Author Article
+            </button>
+
+            <div className="relative">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+              <input
+                type="text"
+                value={kbSearch}
+                onChange={(e) => setKbSearch(e.target.value)}
+                placeholder="Search knowledge base..."
+                className="w-full sm:w-60 pl-8 pr-3 py-1.5 rounded-xl bg-black/40 border border-white/10 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition"
+              />
+            </div>
           </div>
         </div>
 
@@ -318,6 +356,99 @@ export default function DashboardPage() {
           })}
         </div>
       </div>
+
+      {/* Author KB Article Modal */}
+      {newArticleModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <form
+            onSubmit={handleCreateArticle}
+            className="glass-card p-6 max-w-xl w-full bg-[#0a0f1d] border border-violet-500/40 space-y-4 animate-fadeIn"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center gap-2">
+                <Edit3 size={18} className="text-violet-400" />
+                <h3 className="font-bold text-white text-base">Author Knowledge Base Article</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setNewArticleModalOpen(false)}
+                className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="text-gray-400 mb-1 block">Article Title</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. AWS Multi-Region Gateway Timeout Policy"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-violet-400 text-xs"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-gray-400 mb-1 block">Category Domain</label>
+                  <select
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value as any)}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-violet-400 text-xs"
+                  >
+                    <option value="Billing">Billing</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Order">Order</option>
+                    <option value="Account">Account</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-gray-400 mb-1 block">Search Tags (comma-separated)</label>
+                  <input
+                    type="text"
+                    placeholder="gateway, retry, refund"
+                    value={newTags}
+                    onChange={(e) => setNewTags(e.target.value)}
+                    className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-violet-400 text-xs"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-gray-400 mb-1 block">Standard Operating Procedure / Resolution Body</label>
+                <textarea
+                  required
+                  rows={4}
+                  placeholder="Document the exact technical diagnosis and step-by-step remediation protocol..."
+                  value={newContent}
+                  onChange={(e) => setNewContent(e.target.value)}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-violet-400 text-xs resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-white/10 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setNewArticleModalOpen(false)}
+                className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white text-xs"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-600 hover:opacity-95 text-white font-semibold text-xs flex items-center gap-1.5 shadow-lg shadow-violet-500/25"
+              >
+                <PlusCircle size={13} /> Save Article to Memory
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

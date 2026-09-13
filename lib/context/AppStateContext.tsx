@@ -35,6 +35,7 @@ interface AppStateShape {
   toasts: Toast[];
   addCapsule: (c: ContextCapsule) => void;
   addTicketRecord: (t: Ticket) => void;
+  addKbArticle: (article: KBArticle) => void;
   resolveCapsule: (id: string, note: string) => Promise<void>;
   resetDemo: () => void;
   pushToast: (message: string, tone?: Toast['tone']) => void;
@@ -133,6 +134,11 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  function addKbArticle(article: KBArticle) {
+    setKbArticles((prev) => [article, ...prev]);
+    pushToast(`📚 Knowledge Base article added: "${article.title}"`, 'success');
+  }
+
   function resetDemo() {
     setCapsules([]);
     setResolvedCapsules([]);
@@ -150,6 +156,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         toasts,
         addCapsule,
         addTicketRecord,
+        addKbArticle,
         resolveCapsule,
         resetDemo,
         pushToast,
