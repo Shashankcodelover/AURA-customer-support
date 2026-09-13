@@ -24,6 +24,8 @@ import {
   Copy,
   Check,
   Download,
+  Sliders,
+  Wrench,
 } from 'lucide-react';
 import { playSendSound, playSuccessSound, playAlertSound, playClickSound } from '@/lib/audio/soundEffects';
 
@@ -64,6 +66,24 @@ const SCENARIOS = [
     message: "I'm extremely frustrated with the constant billing issues, I want to cancel my enterprise subscription immediately.",
     expected: 'Escalated with Churn Risk Capsule ($4,800/yr)',
   },
+  {
+    id: 'api-rate-limit',
+    label: '⚡ API 429 Throttle',
+    category: 'Developer API',
+    badge: 'Auto-Burst',
+    badgeColor: 'bg-violet-500/15 text-violet-300 border-violet-500/30',
+    message: 'Our production microservices are receiving 429 Too Many Requests on the events endpoint! We are on the Enterprise plan and our SLA guarantees 10,000 req/min.',
+    expected: 'Auto-resolved with dynamic token tier upgrade',
+  },
+  {
+    id: 'gdpr-erasure',
+    label: '🛡️ GDPR Erasure',
+    category: 'Compliance',
+    badge: 'Legal Review',
+    badgeColor: 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+    message: 'Pursuant to Article 17 of GDPR, we request permanent deletion of all telemetry, order history, and account records for workspace WS-8812.',
+    expected: 'Escalated with Legal Privacy Capsule',
+  },
 ];
 
 const SUGGESTIONS = [
@@ -84,6 +104,16 @@ export default function Home() {
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [conversation, setConversation] = useState<ConversationTurn[]>([]);
   const [copiedDossier, setCopiedDossier] = useState(false);
+
+  // Custom Scenario Studio State
+  const [studioOpen, setStudioOpen] = useState(false);
+  const [customCustomer, setCustomCustomer] = useState('Nexus Cloud Systems');
+  const [customTier, setCustomTier] = useState<'Enterprise' | 'Pro' | 'Free'>('Enterprise');
+  const [customCategory, setCustomCategory] = useState('Billing');
+  const [customUrgency, setCustomUrgency] = useState<'High' | 'Medium' | 'Low'>('High');
+  const [customMessage, setCustomMessage] = useState(
+    'We noticed an unexpected $3,200 invoice charge for unprovisioned cluster instances.'
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -207,6 +237,16 @@ export default function Home() {
     pushToast('📥 Downloaded investigation audit JSON', 'success');
   }
 
+  function dispatchStudioScenario() {
+    if (!customMessage.trim()) return;
+    playSendSound();
+    setStudioOpen(false);
+    setActiveScenario('custom-studio');
+    const fullMsg = `[Customer: ${customCustomer} · Tier: ${customTier} · Priority: ${customUrgency} · Domain: ${customCategory}] ${customMessage}`;
+    setInput(customMessage);
+    runCase({ message: fullMsg });
+  }
+
   return (
     <div className="space-y-8 pb-12">
       {/* Hero Section */}
@@ -248,10 +288,109 @@ export default function Home() {
 
       {/* Scenario Launchpad */}
       <div className="space-y-2.5">
-        <div className="flex items-center justify-between text-xs text-gray-400 px-1">
+        <div className="flex items-center justify-between text-xs text-gray-400 px-1 flex-wrap gap-2">
           <span className="font-semibold uppercase tracking-wider">Sample Test Scenarios (Flagship Demo):</span>
-          <span className="text-[11px] text-gray-500">Click any card to trigger live multi-agent investigation</span>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                playClickSound();
+                setStudioOpen(!studioOpen);
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-medium border transition ${
+                studioOpen
+                  ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-500/20'
+                  : 'bg-white/5 hover:bg-white/10 text-gray-300 border-white/10'
+              }`}
+            >
+              <Sliders size={13} className="text-cyan-400" />
+              <span>{studioOpen ? 'Close Scenario Studio' : 'Custom Scenario Studio'}</span>
+            </button>
+            <span className="text-[11px] text-gray-500 hidden sm:inline">
+              Click any card to trigger live multi-agent investigation
+            </span>
+          </div>
         </div>
+
+        {/* Custom Scenario Studio Drawer */}
+        {studioOpen && (
+          <div className="glass-card p-5 border border-cyan-500/40 bg-gradient-to-br from-cyan-950/20 via-slate-900/80 to-slate-950 space-y-4 animate-fadeIn">
+            <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
+              <div className="flex items-center gap-2">
+                <Wrench size={16} className="text-cyan-400" />
+                <h3 className="font-semibold text-sm text-white">Interactive Scenario Studio</h3>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
+                  Custom Heuristic Testbench
+                </span>
+              </div>
+              <button onClick={() => setStudioOpen(false)} className="text-gray-400 hover:text-white text-xs">
+                <X size={15} />
+              </button>
+            </div>
+
+            <div className="grid sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label className="text-gray-400 mb-1 block">Customer / Organization</label>
+                <input
+                  type="text"
+                  value={customCustomer}
+                  onChange={(e) => setCustomCustomer(e.target.value)}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400 font-mono text-xs"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-400 mb-1 block">Customer SLA Tier</label>
+                <select
+                  value={customTier}
+                  onChange={(e) => setCustomTier(e.target.value as any)}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-xs"
+                >
+                  <option value="Enterprise">Enterprise Tier ($4,800/yr)</option>
+                  <option value="Pro">Pro Tier ($29/mo)</option>
+                  <option value="Free">Free Tier ($0/mo)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-gray-400 mb-1 block">Urgency / Routing Heuristic</label>
+                <select
+                  value={customUrgency}
+                  onChange={(e) => setCustomUrgency(e.target.value as any)}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-400 text-xs"
+                >
+                  <option value="High">High Urgency (1-hr SLA)</option>
+                  <option value="Medium">Medium Urgency (4-hr SLA)</option>
+                  <option value="Low">Low Urgency (Standard)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="text-gray-400 mb-1 block text-xs">Incident Description / Customer Message</label>
+              <textarea
+                value={customMessage}
+                onChange={(e) => setCustomMessage(e.target.value)}
+                rows={2}
+                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-cyan-400 text-xs resize-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setStudioOpen(false)}
+                className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white text-xs"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={dispatchStudioScenario}
+                className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-semibold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/25"
+              >
+                <Zap size={13} /> Dispatch to Multi-Agent DAG
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {SCENARIOS.map((s) => (
