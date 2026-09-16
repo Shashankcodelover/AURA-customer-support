@@ -15,6 +15,7 @@ import {
   Printer,
   X,
   DollarSign,
+  Trash2,
 } from 'lucide-react';
 import ConfidenceGauge from './ConfidenceGauge';
 
@@ -51,9 +52,11 @@ function sentimentEmoji(v: number) {
 export default function ContextCapsuleCard({
   capsule,
   onResolve,
+  onDelete,
 }: {
   capsule: ContextCapsule;
   onResolve: (id: string, note: string) => void;
+  onDelete?: (id: string) => void;
 }) {
   const [note, setNote] = useState('');
   const [resolving, setResolving] = useState(false);
@@ -128,6 +131,20 @@ export default function ContextCapsuleCard({
             >
               {copied ? <Check size={13} className="text-[#0E9C74] dark:text-emerald-400" /> : <Copy size={13} />}
             </button>
+
+            {onDelete && (
+              <button
+                onClick={() => {
+                  if (confirm(`Permanently delete Context Capsule for ${capsule.customerName}?`)) {
+                    onDelete(capsule.id);
+                  }
+                }}
+                title="Permanently Delete Capsule"
+                className="p-1.5 rounded-lg bg-[rgba(255,255,255,0.7)] hover:bg-[rgba(225,29,72,0.1)] border border-white/90 hover:border-[rgba(225,29,72,0.3)] text-[#6B6E85] hover:text-[#E11D48] dark:bg-white/5 dark:hover:bg-rose-500/20 dark:border-white/10 dark:hover:border-rose-500/40 dark:text-gray-400 dark:hover:text-rose-400 transition text-xs flex items-center gap-1"
+              >
+                <Trash2 size={13} />
+              </button>
+            )}
 
             <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${urgencyConfig.badge}`}>
               {capsule.urgency} urgency

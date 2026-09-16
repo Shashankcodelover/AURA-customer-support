@@ -78,6 +78,30 @@ export interface InvestigationResult {
  * pipeline can genuinely reference prior turns instead of treating every
  * message as a fresh, context-free case.
  */
+export interface AgentCorridor {
+  id: string;
+  sourceAgent: string;
+  targetAgent: string;
+  protocol: 'HTTP/REST' | 'gRPC' | 'WebSocket' | 'Neural Stream';
+  latencyMs: number;
+  slaTargetMs: number;
+  status: 'ACTIVE' | 'STANDBY' | 'DEGRADED';
+  throughputTokPerSec: number;
+  routeTier: 'Enterprise' | 'Pro' | 'Free' | 'Global';
+  description?: string;
+  createdAt: string;
+}
+
+export interface MeshMetrics {
+  totalCorridors: number;
+  activeCorridors: number;
+  standbyCorridors: number;
+  degradedCorridors: number;
+  averageLatencyMs: number;
+  totalThroughputTokSec: number;
+  slaAdherencePercent: number;
+}
+
 export interface ConversationTurn {
   role: 'customer' | 'agent';
   message: string;

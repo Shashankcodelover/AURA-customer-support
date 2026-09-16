@@ -18,12 +18,22 @@ import {
   ChevronUp,
   X,
   Edit3,
+  Trash2,
 } from 'lucide-react';
 import { ContextCapsule } from '@/lib/types';
 
 export default function DashboardPage() {
-  const { capsules, resolvedCapsules, kbArticles, resolveCapsule, addCapsule, resetDemo, addKbArticle } =
-    useAppState();
+  const {
+    capsules,
+    resolvedCapsules,
+    kbArticles,
+    resolveCapsule,
+    deleteCapsule,
+    deleteKbArticle,
+    addCapsule,
+    resetDemo,
+    addKbArticle,
+  } = useAppState();
   const [selectedFilter, setSelectedFilter] = useState<'All' | 'High' | 'Enterprise' | 'Billing'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [kbSearch, setKbSearch] = useState('');
@@ -259,7 +269,7 @@ export default function DashboardPage() {
         ) : (
           <div className="grid md:grid-cols-2 gap-5">
             {filteredCapsules.map((c) => (
-              <ContextCapsuleCard key={c.id} capsule={c} onResolve={resolveCapsule} />
+              <ContextCapsuleCard key={c.id} capsule={c} onResolve={resolveCapsule} onDelete={deleteCapsule} />
             ))}
           </div>
         )}
@@ -328,9 +338,24 @@ export default function DashboardPage() {
                     <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-[rgba(109,74,235,0.06)] text-[#6D4AEB] border border-[rgba(109,74,235,0.15)] dark:bg-[rgba(109,74,235,0.15)] dark:text-[#B69CFF] font-semibold">
                       {a.category}
                     </span>
-                    <span className="text-[#9599AD] group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition">
-                      {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (confirm(`Permanently delete KB article "${a.title}"?`)) {
+                            deleteKbArticle(a.id);
+                          }
+                        }}
+                        className="p-1 rounded text-[#9599AD] hover:text-[#E11D48] hover:bg-[rgba(225,29,72,0.1)] transition"
+                        title="Delete Article"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                      <span className="text-[#9599AD] group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition">
+                        {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </span>
+                    </div>
                   </div>
                   <h4 className="text-sm font-bold text-[#1B1D2A] dark:text-white group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition line-clamp-1">
                     {a.title}

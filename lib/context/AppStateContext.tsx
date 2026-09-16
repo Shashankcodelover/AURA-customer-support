@@ -3,23 +3,8 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import kbSeed from '@/lib/data/knowledgeBase.json';
 import ticketsSeed from '@/lib/data/tickets.json';
-import { ContextCapsule, KBArticle, Ticket } from '@/lib/types';
-
-/**
- * ── ARCHITECTURE NOTE ───────────────────────────────────────────────
- * On Vercel, serverless API routes are stateless between invocations —
- * there's no guaranteed shared memory between the request that creates
- * a Context Capsule and the request that later loads the dashboard.
- *
- * Rather than bolt on a database just to make a hackathon demo reliable,
- * application state (capsules, KB growth, ticket log) lives here in the
- * browser (React Context + localStorage), while the actual AI reasoning
- * (classification, investigation, root-cause analysis) stays server-side
- * in the API routes. This is a deliberate, honest trade-off for demo
- * reliability — swap this provider for real reads/writes against
- * Postgres + a vector DB to go to production.
- * ─────────────────────────────────────────────────────────────────────
- */
+import { ContextCapsule, KBArticle, Ticket, AgentCorridor } from '@/lib/types';
+import { INITIAL_CORRIDORS } from '@/lib/data/enterpriseStore';
 
 export interface Toast {
   id: string;
@@ -34,10 +19,20 @@ interface AppStateShape {
   resolvedCapsules: ContextCapsule[];
   kbArticles: KBArticle[];
   tickets: Ticket[];
+  corridors: AgentCorridor[];
   toasts: Toast[];
   addCapsule: (c: ContextCapsule) => void;
+  deleteCapsule: (id: string) => Promise<void>;
   addTicketRecord: (t: Ticket) => void;
+  deleteTicket: (id: string) => Promise<void>;
   addKbArticle: (article: KBArticle) => void;
+  deleteKbArticle: (id: string) => Promise<void>;
+  addCorridor: (c: AgentCorridor) => void;
+  deleteCorridor: (id: string) => Promise<void>;
+  bulkImportTickets: (newTickets: Ticket[]) => void;
+  bulkImportCapsules: (newCapsules: ContextCapsule[]) => void;
+  bulkImportKbArticles: (newArticles: KBArticle[]) => void;
+  bulkImportCorridors: (newCorridors: AgentCorridor[]) => void;
   resolveCapsule: (id: string, note: string) => Promise<void>;
   resetDemo: () => void;
   pushToast: (message: string, tone?: Toast['tone']) => void;
@@ -45,7 +40,7 @@ interface AppStateShape {
 }
 
 const AppStateContext = createContext<AppStateShape | null>(null);
-const STORAGE_KEY = 'aura-support-state-v1';
+const STORAGE_KEY = 'aura-support-state-v2';
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -53,6 +48,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [resolvedCapsules, setResolvedCapsules] = useState<ContextCapsule[]>([]);
   const [kbArticles, setKbArticles] = useState<KBArticle[]>(kbSeed as KBArticle[]);
   const [tickets, setTickets] = useState<Ticket[]>(ticketsSeed as Ticket[]);
+  const [corridors, setCorridors] = useState<AgentCorridor[]>(INITIAL_CORRIDORS);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
@@ -107,6 +103,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         if (parsed.resolvedCapsules) setResolvedCapsules(parsed.resolvedCapsules);
         if (parsed.kbArticles) setKbArticles(parsed.kbArticles);
         if (parsed.tickets) setTickets(parsed.tickets);
+        if (parsed.corridors) setCorridors(parsed.corridors);
       }
     } catch {
       // ignore corrupt storage, start fresh
@@ -119,20 +116,46 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     try {
       window.localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ capsules, resolvedCapsules, kbArticles, tickets })
+        JSON.stringify({ capsules, resolvedCapsules, kbArticles, tickets, corridors })
       );
     } catch {
       // storage full/unavailable - non-fatal
     }
-  }, [capsules, resolvedCapsules, kbArticles, tickets, hydrated]);
+  }, [capsules, resolvedCapsules, kbArticles, tickets, corridors, hydrated]);
 
   function addCapsule(c: ContextCapsule) {
     setCapsules((prev) => [c, ...prev]);
     pushToast(`🤝 Case escalated for ${c.customerName} — Context Capsule created`, 'warning');
   }
 
+  async function deleteCapsule(id: string) {
+    setCapsules((prev) => prev.filter((c) => c.id !== id));
+    setResolvedCapsules((prev) => prev.filter((c) => c.id !== id));
+    pushToast(`🗑️ Context Capsule deleted with audit logs purged`, 'info');
+    try {
+      await fetch(`/api/capsules/${id}`, { method: 'DELETE' });
+    } catch {
+      // client-side delete already done
+    }
+  }
+
   function addTicketRecord(t: Ticket) {
     setTickets((prev) => [t, ...prev]);
+  }
+
+  async function deleteTicket(id: string) {
+    const victim = tickets.find((t) => t.id === id);
+    setTickets((prev) => prev.filter((t) => t.id !== id));
+    if (victim) {
+      // Cascade to capsules
+      setCapsules((prev) => prev.filter((c) => c.customerName.toLowerCase() !== victim.customerId.toLowerCase()));
+    }
+    pushToast(`🗑️ Ticket ${id} and linked context records deleted`, 'info');
+    try {
+      await fetch(`/api/tickets/${id}`, { method: 'DELETE' });
+    } catch {
+      // non-fatal
+    }
   }
 
   async function resolveCapsule(id: string, note: string) {
@@ -163,7 +186,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         pushToast(`📚 Self-learning loop: new KB article drafted — "${data.title}"`, 'success');
       }
     } catch {
-      // non-fatal: capsule is still marked resolved even if KB drafting fails
+      // non-fatal
     }
   }
 
@@ -172,11 +195,57 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     pushToast(`📚 Knowledge Base article added: "${article.title}"`, 'success');
   }
 
+  async function deleteKbArticle(id: string) {
+    setKbArticles((prev) => prev.filter((a) => a.id !== id));
+    pushToast(`🗑️ KB article removed from search index`, 'info');
+    try {
+      await fetch(`/api/kb/${id}`, { method: 'DELETE' });
+    } catch {
+      // non-fatal
+    }
+  }
+
+  function addCorridor(corridor: AgentCorridor) {
+    setCorridors((prev) => [corridor, ...prev]);
+    pushToast(`⚡ New agent corridor provisioned: ${corridor.sourceAgent} ➔ ${corridor.targetAgent}`, 'success');
+  }
+
+  async function deleteCorridor(id: string) {
+    setCorridors((prev) => prev.filter((c) => c.id !== id));
+    pushToast(`✂️ Agent corridor severed from active routing mesh`, 'warning');
+    try {
+      await fetch(`/api/topology/${id}`, { method: 'DELETE' });
+    } catch {
+      // non-fatal
+    }
+  }
+
+  function bulkImportTickets(newTickets: Ticket[]) {
+    setTickets((prev) => [...newTickets, ...prev]);
+    pushToast(`📥 Bulk Ingestion: ${newTickets.length} tickets loaded`, 'success');
+  }
+
+  function bulkImportCapsules(newCapsules: ContextCapsule[]) {
+    setCapsules((prev) => [...newCapsules, ...prev]);
+    pushToast(`📥 Bulk Ingestion: ${newCapsules.length} Context Capsules queued`, 'success');
+  }
+
+  function bulkImportKbArticles(newArticles: KBArticle[]) {
+    setKbArticles((prev) => [...newArticles, ...prev]);
+    pushToast(`📥 Bulk Ingestion: ${newArticles.length} KB articles indexed`, 'success');
+  }
+
+  function bulkImportCorridors(newCorridors: AgentCorridor[]) {
+    setCorridors((prev) => [...newCorridors, ...prev]);
+    pushToast(`📥 Bulk Ingestion: ${newCorridors.length} agent corridors deployed`, 'success');
+  }
+
   function resetDemo() {
     setCapsules([]);
     setResolvedCapsules([]);
     setKbArticles(kbSeed as KBArticle[]);
     setTickets(ticketsSeed as Ticket[]);
+    setCorridors(INITIAL_CORRIDORS);
   }
 
   return (
@@ -188,10 +257,20 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
         resolvedCapsules,
         kbArticles,
         tickets,
+        corridors,
         toasts,
         addCapsule,
+        deleteCapsule,
         addTicketRecord,
+        deleteTicket,
         addKbArticle,
+        deleteKbArticle,
+        addCorridor,
+        deleteCorridor,
+        bulkImportTickets,
+        bulkImportCapsules,
+        bulkImportKbArticles,
+        bulkImportCorridors,
         resolveCapsule,
         resetDemo,
         pushToast,

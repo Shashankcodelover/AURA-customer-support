@@ -20,6 +20,8 @@ import {
   Command,
   Sun,
   Moon,
+  Network,
+  UploadCloud,
 } from 'lucide-react';
 import { useAppState } from '@/lib/context/AppStateContext';
 import { isSoundEnabled, setSoundEnabled, playClickSound } from '@/lib/audio/soundEffects';
@@ -28,6 +30,8 @@ import CommandPalette from './CommandPalette';
 const links = [
   { href: '/', label: 'Customer Chat', icon: MessageSquare },
   { href: '/dashboard', label: 'Agent Dashboard', icon: LayoutDashboard },
+  { href: '/topology', label: 'Topology Mesh', icon: Network },
+  { href: '/ingestion', label: 'Bulk Ingestion', icon: UploadCloud },
   { href: '/analytics', label: 'Churn Radar', icon: LineChart },
   { href: '/workflow', label: 'Workflow DAG', icon: GitGraph },
 ];
