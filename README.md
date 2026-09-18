@@ -2,7 +2,7 @@
 
 ***"It doesn't just answer tickets. It investigates them."***
 
-A multi-agent AI customer support system built for the **Customer Support** hackathon track. AURA routes incoming issues to specialist agents, investigates root causes across orders/tickets/knowledge base, auto-resolves what it safely can, and hands everything else to a human with a complete **Context Capsule** instead of a raw chat log — then learns from every resolution.
+A multi-agent AI customer support system built for the **CUSTOMER SUPPORT** hackathon track. AURA routes incoming issues to specialist agents, investigates root causes across orders/tickets/knowledge base, auto-resolves what it safely can, and hands everything else to a human with a complete **Context Capsule** instead of a raw chat log — then learns from every resolution.
 
 Built with **Next.js 14 + TypeScript + Tailwind**, reasoning powered by **Qwen**, orchestrated as a set of clean agent nodes designed to map directly onto an **EnterPro** workflow graph in production.
 
