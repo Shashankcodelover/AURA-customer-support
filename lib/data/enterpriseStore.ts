@@ -1,9 +1,6 @@
-import { createRequire } from 'node:module';
 import { Ticket, ContextCapsule, KBArticle, AgentCorridor, MeshMetrics } from '../types';
-
-const require = createRequire(import.meta.url);
-const ticketsSeed = require('./tickets.json');
-const kbSeed = require('./knowledgeBase.json');
+import ticketsSeed from './tickets.json';
+import kbSeed from './knowledgeBase.json';
 
 export const INITIAL_CORRIDORS: AgentCorridor[] = [
   {
