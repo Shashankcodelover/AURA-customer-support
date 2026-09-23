@@ -11,7 +11,7 @@ const CUSTOMER_MAP = new Map(customersData.map((c) => [c.id, c]));
 
 const CATEGORY_COLORS: Record<string, string> = {
   Billing: '#06b6d4', // cyan-500
-  Order: '#8b5cf6', // violet-500
+  Order: '#3b82f6', // violet-500
   Technical: '#3b82f6', // blue-500
   Account: '#ec4899', // pink-500
 };
@@ -151,7 +151,7 @@ export default function ChurnRadar({ tickets }: { tickets: Ticket[] }) {
 
             const tierStyle =
               r.tier === 'Enterprise'
-                ? 'bg-[rgba(109,74,235,0.1)] text-[#6D4AEB] border-[rgba(109,74,235,0.3)] dark:bg-purple-500/20 dark:text-purple-300 dark:border-purple-500/30'
+                ? 'bg-[rgba(109,74,235,0.1)] text-[#6D4AEB] border-[rgba(109,74,235,0.3)] dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30'
                 : r.tier === 'Pro'
                 ? 'bg-[rgba(14,156,116,0.1)] text-[#0E9C74] border-[rgba(14,156,116,0.3)] dark:bg-cyan-500/20 dark:text-cyan-300 dark:border-cyan-500/30'
                 : 'bg-[rgba(255,255,255,0.7)] text-[#6B6E85] border-white/90 dark:bg-slate-500/20 dark:text-slate-300 dark:border-slate-500/30';

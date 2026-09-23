@@ -161,7 +161,7 @@ export default function ContextCapsuleCard({
             </span>
             <span className="text-[#9599AD]">·</span>
             <span className="text-[#9599AD]">Account Exposure:</span>
-            <span className="px-2 py-0.5 rounded-md bg-[rgba(109,74,235,0.06)] dark:bg-purple-500/10 border border-[rgba(109,74,235,0.2)] dark:border-purple-500/30 text-[#6D4AEB] dark:text-purple-300 font-mono text-[11px]">
+            <span className="px-2 py-0.5 rounded-md bg-[rgba(109,74,235,0.06)] dark:bg-blue-500/10 border border-[rgba(109,74,235,0.2)] dark:border-blue-500/30 text-[#6D4AEB] dark:text-blue-300 font-mono text-[11px]">
               {ltvDisplay}
             </span>
           </div>
@@ -352,7 +352,7 @@ export default function ContextCapsuleCard({
                 </div>
                 <div>
                   <span className="text-[#6B6E85] dark:text-gray-500 block">Tier / Value</span>
-                  <strong className="text-[#6D4AEB] dark:text-purple-300">{capsule.customerTier} ({ltvDisplay})</strong>
+                  <strong className="text-[#6D4AEB] dark:text-blue-300">{capsule.customerTier} ({ltvDisplay})</strong>
                 </div>
                 <div>
                   <span className="text-[#6B6E85] dark:text-gray-500 block">SLA Priority</span>

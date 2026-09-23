@@ -111,7 +111,7 @@ export default function AgentNetworkDiagram({ revealedSteps }: { revealedSteps: 
             <line x1="50" y1="0" x2="250" y2="0" stroke="rgba(109,74,235,0.1)" className="dark:stroke-white/15" strokeWidth="2" />
             <line x1="150" y1="0" x2="150" y2="24" stroke="rgba(109,74,235,0.1)" className="dark:stroke-white/15" strokeWidth="2" />
             {reasoningStatus !== 'idle' && (
-              <line x1="150" y1="0" x2="150" y2="24" stroke="#6D4AEB" strokeWidth="2" className="anim-beam dark:stroke-purple-400" />
+              <line x1="150" y1="0" x2="150" y2="24" stroke="#6D4AEB" strokeWidth="2" className="anim-beam dark:stroke-blue-400" />
             )}
           </svg>
         </div>
@@ -121,14 +121,14 @@ export default function AgentNetworkDiagram({ revealedSteps }: { revealedSteps: 
           <div
             className={`w-full flex items-center justify-between px-4 py-2.5 rounded-2xl border transition-all duration-300 ${
               reasoningStatus === 'active'
-                ? 'border-[#6D4AEB] bg-[rgba(109,74,235,0.08)] dark:border-purple-400 dark:bg-purple-500/20 text-[#1B1D2A] dark:text-white shadow-[0_0_25px_rgba(109,74,235,0.2)] dark:shadow-[0_0_25px_rgba(168,85,247,0.4)] scale-[1.02]'
+                ? 'border-[#6D4AEB] bg-[rgba(109,74,235,0.08)] dark:border-blue-400 dark:bg-blue-500/20 text-[#1B1D2A] dark:text-white shadow-[0_0_25px_rgba(109,74,235,0.2)] dark:shadow-[0_0_25px_rgba(168,85,247,0.4)] scale-[1.02]'
                 : reasoningStatus === 'done'
                 ? 'border-[rgba(14,156,116,0.4)] dark:border-emerald-500/50 bg-[rgba(14,156,116,0.06)] dark:bg-emerald-500/10 text-[#0E9C74] dark:text-emerald-200'
                 : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.03] text-[#9599AD] dark:text-gray-500'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <div className={`p-1.5 rounded-lg ${reasoningStatus === 'active' ? 'bg-[#6D4AEB] text-white dark:bg-purple-500 animate-pulse' : 'bg-black/5 dark:bg-white/10 text-[#9599AD] dark:text-gray-400'}`}>
+              <div className={`p-1.5 rounded-lg ${reasoningStatus === 'active' ? 'bg-[#6D4AEB] text-white dark:bg-blue-500 animate-pulse' : 'bg-black/5 dark:bg-white/10 text-[#9599AD] dark:text-gray-400'}`}>
                 <Brain size={15} />
               </div>
               <div>
@@ -138,7 +138,7 @@ export default function AgentNetworkDiagram({ revealedSteps }: { revealedSteps: 
                 <div className="text-[10px] text-[#6B6E85] dark:text-gray-400">Traces symptoms to systemic root causes</div>
               </div>
             </div>
-            {reasoningStatus === 'active' && <span className="text-[10px] font-mono font-bold text-[#6D4AEB] dark:text-purple-300 animate-pulse">SYNTHESIZING...</span>}
+            {reasoningStatus === 'active' && <span className="text-[10px] font-mono font-bold text-[#6D4AEB] dark:text-blue-300 animate-pulse">SYNTHESIZING...</span>}
             {reasoningStatus === 'done' && <CheckCircle size={14} className="text-[#0E9C74] dark:text-emerald-400" />}
           </div>
         </div>
