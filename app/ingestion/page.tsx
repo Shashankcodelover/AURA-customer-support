@@ -282,13 +282,13 @@ export default function BulkIngestionStudio() {
               <span className="w-2 h-2 rounded-full bg-[#0E9C74] animate-pulse" />
               Enterprise ETL Pipeline
             </span>
-            <span className="text-xs text-[#9599AD]">Multi-Entity Batch Ingestion</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">Multi-Entity Batch Ingestion</span>
           </div>
           <h1 className="font-display text-3xl font-extrabold tracking-tight text-[#1B1D2A] dark:text-white flex items-center gap-3">
             <UploadCloud className="text-[#6D4AEB]" size={32} />
             Enterprise Bulk Ingestion Studio
           </h1>
-          <p className="text-sm text-[#6B6E85] dark:text-[#8B8FA3] mt-1 max-w-2xl">
+          <p className="text-sm text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mt-1 max-w-2xl">
             Atomic batch upload for Support Incidents, Context Capsules, Knowledge Base documentation,
             and Agent Topology Corridors supporting raw CSV and formatted JSON payloads.
           </p>
@@ -298,14 +298,14 @@ export default function BulkIngestionStudio() {
         <div className="flex items-center gap-3">
           <button
             onClick={handleLoadSample}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[rgba(109,74,235,0.08)] dark:bg-violet-500/20 text-[#6D4AEB] dark:text-violet-300 border border-[rgba(109,74,235,0.25)] hover:bg-[rgba(109,74,235,0.15)] transition"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-[rgba(109,74,235,0.08)] dark:bg-violet-500/20 text-[#6D4AEB] dark:text-violet-300 border border-[rgba(109,74,235,0.25)] hover:bg-[rgba(109,74,235,0.15)] transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
           >
             <Sparkles size={15} />
             Load Sample Template
           </button>
           <button
             onClick={handleClear}
-            className="px-3.5 py-2 rounded-xl text-xs font-medium bg-[rgba(255,255,255,0.7)] dark:bg-white/5 text-[#6B6E85] hover:text-[#1B1D2A] border border-white/90 dark:border-white/10 transition"
+            className="px-3.5 py-2 rounded-xl text-xs font-medium bg-[rgba(255,255,255,0.7)] dark:bg-white/5 text-slate-700 dark:text-slate-300 hover:text-[#1B1D2A] border border-white/90 dark:border-white/10 transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
           >
             Clear Buffer
           </button>
@@ -326,10 +326,10 @@ export default function BulkIngestionStudio() {
             <button
               key={tab.id}
               onClick={() => handleEntityChange(tab.id as EntityType)}
-              className={`flex-1 min-w-[160px] flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition ${
+              className={`flex-1 min-w-[160px] flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none ${
                 isActive
                   ? 'bg-white dark:bg-[#0F1424] text-[#1B1D2A] dark:text-white shadow-md shadow-[#6D4AEB]/10 border border-white/90 dark:border-white/10'
-                  : 'text-[#6B6E85] dark:text-gray-400 hover:text-[#1B1D2A]'
+                  : 'text-slate-700 dark:text-slate-300 dark:text-gray-400 hover:text-[#1B1D2A]'
               }`}
             >
               <Icon size={16} className={isActive ? 'text-[#6D4AEB]' : ''} />
@@ -343,26 +343,26 @@ export default function BulkIngestionStudio() {
       <div className="glass-card p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Format toggle */}
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-[#6B6E85] uppercase tracking-wider">
+          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
             Format Schema:
           </span>
           <div className="flex items-center gap-1 p-1 rounded-lg bg-[rgba(255,255,255,0.5)] dark:bg-black/30 border border-white/90 dark:border-white/10">
             <button
               onClick={() => handleFormatChange('csv')}
-              className={`px-3 py-1 rounded text-xs font-bold transition ${
+              className={`px-3 py-1 rounded text-xs font-bold transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none ${
                 format === 'csv'
                   ? 'bg-[#6D4AEB] text-white shadow-sm'
-                  : 'text-[#6B6E85] hover:text-[#1B1D2A]'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-[#1B1D2A]'
               }`}
             >
               CSV
             </button>
             <button
               onClick={() => handleFormatChange('json')}
-              className={`px-3 py-1 rounded text-xs font-bold transition ${
+              className={`px-3 py-1 rounded text-xs font-bold transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none ${
                 format === 'json'
                   ? 'bg-[#6D4AEB] text-white shadow-sm'
-                  : 'text-[#6B6E85] hover:text-[#1B1D2A]'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-[#1B1D2A]'
               }`}
             >
               JSON
@@ -372,10 +372,10 @@ export default function BulkIngestionStudio() {
 
         {/* Telemetry info */}
         <div className="flex items-center gap-4 text-xs">
-          <span className="text-[#6B6E85]">
+          <span className="text-slate-700 dark:text-slate-300">
             Rows / Lines: <strong className="text-[#1B1D2A] dark:text-white">{lineCount}</strong>
           </span>
-          <span className="text-[#6B6E85]">
+          <span className="text-slate-700 dark:text-slate-300">
             Target Table:{' '}
             <strong className="text-[#6D4AEB] dark:text-violet-300 capitalize">{activeEntity}</strong>
           </span>
@@ -385,11 +385,11 @@ export default function BulkIngestionStudio() {
       {/* Live Monospace Syntax Buffer */}
       <div className="glass-card overflow-hidden border border-white/90 dark:border-white/10">
         <div className="px-4 py-2.5 bg-[rgba(255,255,255,0.4)] dark:bg-black/40 border-b border-white/80 dark:border-white/5 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs font-mono text-[#6B6E85] dark:text-gray-400">
+          <div className="flex items-center gap-2 text-xs font-mono text-slate-700 dark:text-slate-300 dark:text-gray-400">
             <FileCode size={14} className="text-[#6D4AEB]" />
             <span>schema_buffer.{format}</span>
           </div>
-          <span className="text-[11px] text-[#9599AD]">UTF-8 Encoded Monospace Buffer</span>
+          <span className="text-[11px] text-slate-600 dark:text-slate-400">UTF-8 Encoded Monospace Buffer</span>
         </div>
 
         <textarea
@@ -401,7 +401,7 @@ export default function BulkIngestionStudio() {
         />
 
         <div className="p-4 bg-[rgba(255,255,255,0.5)] dark:bg-black/30 border-t border-white/80 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs text-[#6B6E85]">
+          <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
             <CheckCircle2 size={15} className="text-[#0E9C74]" />
             <span>Schema parser ready. Atomic rollback enabled on syntax errors.</span>
           </div>
@@ -409,7 +409,7 @@ export default function BulkIngestionStudio() {
           <button
             onClick={handleExecuteUpload}
             disabled={isProcessing || !buffer.trim()}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs tracking-wide bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] text-[#1B1D2A] hover:opacity-95 shadow-md shadow-[#6D4AEB]/20 transition transform active:scale-95 disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs tracking-wide bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] text-[#1B1D2A] hover:opacity-95 shadow-md shadow-[#6D4AEB]/20 transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none transform active:scale-95 disabled:opacity-50"
           >
             {isProcessing ? (
               <>
@@ -429,7 +429,7 @@ export default function BulkIngestionStudio() {
       {/* Results Panel */}
       {lastResult && (
         <div
-          className={`glass-card p-6 border-l-4 space-y-4 animate-fade-in ${
+          className={`glass-card p-4 sm:p-5 border-l-4 space-y-4 animate-fade-in ${
             lastResult.success
               ? 'border-l-[#0E9C74] bg-[rgba(14,156,116,0.03)]'
               : 'border-l-[#E11D48] bg-[rgba(225,29,72,0.03)]'
@@ -453,11 +453,11 @@ export default function BulkIngestionStudio() {
             )}
           </div>
 
-          <p className="text-xs text-[#6B6E85] dark:text-[#8B8FA3]">{lastResult.message}</p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3]">{lastResult.message}</p>
 
           {lastResult.sample && lastResult.sample.length > 0 && (
             <div className="space-y-2 pt-2 border-t border-[rgba(109,74,235,0.08)] dark:border-white/5">
-              <span className="text-[11px] font-bold text-[#6B6E85] uppercase tracking-wider block">
+              <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block">
                 Committed Records Preview (First {lastResult.sample.length} items):
               </span>
               <div className="overflow-x-auto">

@@ -22,7 +22,7 @@ export default function ToastStack() {
           className={`glass-card border px-4 py-3 text-sm flex items-start justify-between gap-3 animate-fadeIn ${TONE_STYLES[t.tone]}`}
         >
           <span>{t.message}</span>
-          <button onClick={() => dismissToast(t.id)} className="shrink-0 opacity-60 hover:opacity-100 transition">
+          <button onClick={() => dismissToast(t.id)} className="shrink-0 opacity-60 hover:opacity-100 transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none">
             <X size={14} />
           </button>
         </div>

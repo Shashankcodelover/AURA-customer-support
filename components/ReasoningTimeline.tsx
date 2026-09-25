@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ReasoningStep } from '@/lib/types';
-import { Terminal, Cpu, ShieldCheck, Zap } from 'lucide-react';
+import { Terminal, Cpu, Zap } from 'lucide-react';
 
 import { playStepSound } from '@/lib/audio/soundEffects';
 
@@ -50,16 +51,16 @@ export default function ReasoningTimeline({
 
   return (
     <div className="space-y-2.5">
-      <div className="flex items-center justify-between text-xs text-[#6B6E85] dark:text-gray-400 border-b border-[rgba(109,74,235,0.08)] dark:border-white/5 pb-2">
+      <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 dark:text-gray-400 border-b border-[rgba(109,74,235,0.08)] dark:border-white/5 pb-2">
         <div className="flex items-center gap-2 font-mono">
           <Terminal size={14} className="text-[#6D4AEB] dark:text-violet-400" />
           <span>Chain-of-Thought Stream</span>
         </div>
-        <div className="flex items-center gap-3 text-[11px] font-mono text-[#6B6E85] dark:text-gray-400">
+        <div className="flex items-center gap-3 text-[11px] font-mono text-slate-700 dark:text-slate-300 dark:text-gray-400">
           <span className="flex items-center gap-1 text-[#6D4AEB] dark:text-violet-300">
             <Zap size={12} /> 85 tok/s
           </span>
-          <span className="text-[#6B6E85] dark:text-gray-600">|</span>
+          <span className="text-slate-700 dark:text-slate-300 dark:text-gray-600">|</span>
           <span className="flex items-center gap-1">
             <Cpu size={12} className="text-[#6D4AEB] dark:text-violet-400" /> Qwen-Plus
           </span>
@@ -67,42 +68,48 @@ export default function ReasoningTimeline({
       </div>
 
       <div className="space-y-2.5 font-mono text-xs max-h-72 overflow-y-auto pr-1">
-        {steps.slice(0, visible).map((s, idx) => {
-          const isLast = idx === visible - 1;
-          const conf = AGENT_CONFIG[s.agent] || { color: 'text-gray-600 dark:text-gray-300', bg: 'bg-black/5 dark:bg-white/5', border: 'border-black/10 dark:border-white/10' };
-          const timestampOffset = `+${(idx * 0.22).toFixed(2)}s`;
+        <AnimatePresence>
+          {steps.slice(0, visible).map((s, idx) => {
+            const isLast = idx === visible - 1;
+            const conf = AGENT_CONFIG[s.agent] || { color: 'text-gray-600 dark:text-gray-300', bg: 'bg-black/5 dark:bg-white/5', border: 'border-black/10 dark:border-white/10' };
+            const timestampOffset = `+${(idx * 0.22).toFixed(2)}s`;
 
-          return (
-            <div
-              key={idx}
-              className={`flex gap-3 items-start p-2.5 rounded-xl border transition-all duration-300 animate-fadeIn ${
-                isLast
-                  ? 'border-[rgba(109,74,235,0.3)] dark:border-violet-400/40 bg-[rgba(109,74,235,0.04)] dark:bg-gradient-to-r dark:from-violet-500/10 dark:to-transparent shadow-sm'
-                  : 'border-white/90 dark:border-white/5 bg-[rgba(255,255,255,0.5)] dark:bg-black/20'
-              }`}
-            >
-              <div className="flex flex-col items-center shrink-0 pt-0.5">
-                <span
-                  className={`h-2 w-2 rounded-full ${
-                    isLast ? 'bg-[#6D4AEB] dark:bg-violet-400 animate-pulse' : 'bg-[#0E9C74] dark:bg-emerald-400/80'
-                  }`}
-                />
-                <span className="text-[10px] text-gray-500 mt-1 font-mono">{timestampOffset}</span>
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                layout
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                className={`flex gap-3 items-start p-2.5 rounded-xl border transition-all duration-300 ${
+                  isLast
+                    ? 'border-[rgba(109,74,235,0.3)] dark:border-violet-400/40 bg-[rgba(109,74,235,0.04)] dark:bg-gradient-to-r dark:from-violet-500/10 dark:to-transparent shadow-sm'
+                    : 'border-white/90 dark:border-white/5 bg-[rgba(255,255,255,0.5)] dark:bg-black/20'
+                }`}
+              >
+                <div className="flex flex-col items-center shrink-0 pt-0.5">
                   <span
-                    className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${conf.bg} ${conf.color} ${conf.border}`}
-                  >
-                    {s.agent}
-                  </span>
+                    className={`h-2 w-2 rounded-full ${
+                      isLast ? 'bg-[#6D4AEB] dark:bg-violet-400 animate-pulse' : 'bg-[#0E9C74] dark:bg-emerald-400/80'
+                    }`}
+                  />
+                  <span className="text-[10px] text-gray-500 mt-1 font-mono">{timestampOffset}</span>
                 </div>
-                <p className="text-[#1B1D2A] dark:text-gray-200 leading-relaxed break-words">{s.text}</p>
-              </div>
-            </div>
-          );
-        })}
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span
+                      className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${conf.bg} ${conf.color} ${conf.border}`}
+                    >
+                      {s.agent}
+                    </span>
+                  </div>
+                  <p className="text-[#1B1D2A] dark:text-gray-200 leading-relaxed break-words">{s.text}</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
     </div>
   );

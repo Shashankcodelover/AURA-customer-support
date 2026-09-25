@@ -170,14 +170,14 @@ export default function WorkflowPage() {
             <span className="text-xs font-mono font-medium px-2.5 py-0.5 rounded-full border-[rgba(14,156,116,0.2)] bg-[rgba(14,156,116,0.06)] text-[#0E9C74] flex items-center gap-1.5">
               <Cpu size={12} className="text-[#0E9C74]" /> Orchestration runtime
             </span>
-            <span className="text-[#6B6E85] dark:text-[#8B8FA3] text-xs">·</span>
-            <span className="text-xs text-[#6B6E85] dark:text-[#8B8FA3]">Declarative DAG Manifest v{def.version}</span>
+            <span className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] text-xs">·</span>
+            <span className="text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3]">Declarative DAG Manifest v{def.version}</span>
           </div>
           <h1 className="font-display text-2xl md:text-3xl font-bold text-[#1B1D2A] dark:text-white tracking-tight flex items-center gap-2.5">
             <Workflow className="text-[#6D4AEB]" size={28} />
             Registered Multi-Agent Graph Architecture
           </h1>
-          <p className="text-[#6B6E85] dark:text-[#8B8FA3] text-sm mt-1 max-w-2xl">
+          <p className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] text-sm mt-1 max-w-2xl">
             Portable enterprise directed acyclic graph. Every node corresponds 1:1 with an intelligent micro-agent or
             deterministic rule execution gate.
           </p>
@@ -187,15 +187,15 @@ export default function WorkflowPage() {
         <div className="flex flex-wrap items-center gap-2">
           {/* Speed Selector */}
           <div className="flex items-center bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(15,20,35,0.72)] border border-white/90 dark:border-white/10 rounded-xl p-1 text-xs">
-            <span className="px-2 text-[#6B6E85] dark:text-[#8B8FA3] font-mono text-[11px] hidden sm:inline">Speed:</span>
+            <span className="px-2 text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-mono text-[11px] hidden sm:inline">Speed:</span>
             {[0.5, 1, 2].map((speed) => (
               <button
                 key={speed}
                 onClick={() => setSimSpeed(speed)}
-                className={`px-2 py-0.5 rounded-lg font-mono font-medium transition ${
+                className={`px-2 py-0.5 rounded-lg font-mono font-medium transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none ${
                   simSpeed === speed
                     ? 'bg-[rgba(109,74,235,0.12)] text-[#6D4AEB] border-[rgba(109,74,235,0.3)]'
-                    : 'text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white'
+                    : 'text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white'
                 }`}
               >
                 {speed}x
@@ -208,7 +208,7 @@ export default function WorkflowPage() {
             <button
               onClick={stepBackward}
               disabled={activeSimStep <= 0}
-              className="p-1.5 rounded-lg text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
+              className="p-1.5 rounded-lg text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
               title="Previous Step"
             >
               <SkipBack size={15} />
@@ -217,14 +217,14 @@ export default function WorkflowPage() {
             {!isSimulating ? (
               <button
                 onClick={startSimulation}
-                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] hover:opacity-95 text-[#1B1D2A] font-semibold text-xs transition flex items-center gap-1.5 shadow-[0_8px_30px_rgba(109,74,235,0.12)]"
+                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] hover:opacity-95 text-[#1B1D2A] font-semibold text-xs transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none flex items-center gap-1.5 shadow-[0_8px_30px_rgba(109,74,235,0.12)]"
               >
                 <Play size={13} fill="currentColor" /> Simulate Flow
               </button>
             ) : (
               <button
                 onClick={togglePause}
-                className="px-3 py-1.5 rounded-lg bg-[rgba(109,74,235,0.15)] border border-[#6D4AEB] text-[#6D4AEB] font-semibold text-xs transition flex items-center gap-1.5"
+                className="px-3 py-1.5 rounded-lg bg-[rgba(109,74,235,0.15)] border border-[#6D4AEB] text-[#6D4AEB] font-semibold text-xs transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none flex items-center gap-1.5"
               >
                 {isPaused ? <Play size={13} fill="currentColor" /> : <Pause size={13} />}
                 {isPaused ? 'Resume' : `Step ${activeSimStep + 1}/${simSequence.length}`}
@@ -234,7 +234,7 @@ export default function WorkflowPage() {
             <button
               onClick={stepForward}
               disabled={activeSimStep >= simSequence.length - 1 && isSimulating}
-              className="p-1.5 rounded-lg text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
+              className="p-1.5 rounded-lg text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white disabled:opacity-30 disabled:pointer-events-none transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
               title="Next Step"
             >
               <SkipForward size={15} />
@@ -243,7 +243,7 @@ export default function WorkflowPage() {
             {isSimulating && (
               <button
                 onClick={resetSimulation}
-                className="p-1.5 rounded-lg text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#E11D48] transition"
+                className="p-1.5 rounded-lg text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] hover:text-[#E11D48] transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
                 title="Reset Simulation"
               >
                 <RotateCcw size={14} />
@@ -253,7 +253,7 @@ export default function WorkflowPage() {
 
           <button
             onClick={handleCopyManifest}
-            className="p-2 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 border border-white/90 dark:border-white/10 text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white transition text-xs flex items-center gap-1.5"
+            className="p-2 rounded-xl bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 border border-white/90 dark:border-white/10 text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none text-xs flex items-center gap-1.5"
             title="Copy DAG JSON"
           >
             {copied ? <Check size={14} className="text-[#0E9C74]" /> : <Copy size={14} />}
@@ -263,7 +263,7 @@ export default function WorkflowPage() {
 
       {/* Deployment & Environment Status Strip */}
       <div className="glass-card p-4 flex flex-wrap items-center justify-between gap-4 text-xs">
-        <div className="flex flex-wrap items-center gap-4 text-[#6B6E85] dark:text-[#8B8FA3]">
+        <div className="flex flex-wrap items-center gap-4 text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3]">
           <span className="flex items-center gap-1.5">
             <span className="font-medium">Pipeline:</span>
             <span className="font-mono text-[#6D4AEB] font-semibold">{def.workflow}</span>
@@ -308,7 +308,7 @@ export default function WorkflowPage() {
                   {selectedNode.id}
                 </span>
               </div>
-              <p className="text-[11px] text-[#6B6E85] dark:text-[#8B8FA3] mt-0.5">
+              <p className="text-[11px] text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mt-0.5">
                 {isPaused
                   ? 'Simulation paused. Use Step Forward / Backward to inspect graph propagation.'
                   : `Propagating execution context at ${simSpeed}x playback rate...`}
@@ -331,10 +331,10 @@ export default function WorkflowPage() {
       <div className="lg:hidden flex items-center bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(15,20,35,0.72)] border border-white/90 dark:border-white/10 rounded-xl p-1 text-xs gap-1">
         <button
           onClick={() => setMobileWorkflowView('graph')}
-          className={`flex-1 py-2 rounded-lg font-medium transition text-center flex items-center justify-center gap-1.5 ${
+          className={`flex-1 py-2 rounded-lg font-medium transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none text-center flex items-center justify-center gap-1.5 ${
             mobileWorkflowView === 'graph'
               ? 'bg-[#1B1D2A] text-white shadow-sm'
-              : 'text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white'
+              : 'text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white'
           }`}
         >
           <GitBranch size={13} className={mobileWorkflowView === 'graph' ? 'text-white' : 'text-[#6D4AEB]'} />
@@ -342,10 +342,10 @@ export default function WorkflowPage() {
         </button>
         <button
           onClick={() => setMobileWorkflowView('inspector')}
-          className={`flex-1 py-2 rounded-lg font-medium transition text-center flex items-center justify-center gap-1.5 ${
+          className={`flex-1 py-2 rounded-lg font-medium transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none text-center flex items-center justify-center gap-1.5 ${
             mobileWorkflowView === 'inspector'
               ? 'bg-[#1B1D2A] text-white shadow-sm'
-              : 'text-[#6B6E85] dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white'
+              : 'text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] hover:text-[#1B1D2A] dark:hover:text-white'
           }`}
         >
           <Sparkles size={13} className={mobileWorkflowView === 'inspector' ? 'text-white' : 'text-[#6D4AEB]'} />
@@ -354,15 +354,15 @@ export default function WorkflowPage() {
       </div>
 
       {/* Visual Interactive Graph & Node Inspector Grid */}
-      <div className="grid lg:grid-cols-12 gap-6 items-start">
+      <div className="grid lg:grid-cols-12 gap-4 sm:p-5 items-start">
         {/* Left (7 cols): Interactive Visual Node Graph */}
-        <div className={`lg:col-span-7 glass-card p-5 md:p-6 space-y-4 ${mobileWorkflowView === 'graph' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-7 glass-card p-5 md:p-4 sm:p-5 space-y-4 ${mobileWorkflowView === 'graph' ? 'block' : 'hidden lg:block'}`}>
           <div className="flex items-center justify-between border-b border-gray-200 dark:border-white/10 pb-3">
             <h2 className="font-display font-semibold text-[#1B1D2A] dark:text-white flex items-center gap-2">
               <GitBranch size={16} className="text-[#6D4AEB]" />
               Interactive DAG Visualizer
             </h2>
-            <span className="text-xs text-[#6B6E85] dark:text-[#8B8FA3]">Click any node to inspect execution schema</span>
+            <span className="text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3]">Click any node to inspect execution schema</span>
           </div>
 
           <div className="space-y-3">
@@ -392,7 +392,7 @@ export default function WorkflowPage() {
 
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-[rgba(255,255,255,0.7)] dark:bg-white/5 border border-white/90 dark:border-white/10 flex items-center justify-center font-mono text-xs text-[#6B6E85] dark:text-[#8B8FA3] font-semibold">
+                      <div className="w-7 h-7 rounded-lg bg-[rgba(255,255,255,0.7)] dark:bg-white/5 border border-white/90 dark:border-white/10 flex items-center justify-center font-mono text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-semibold">
                         {index + 1}
                       </div>
                       <div>
@@ -402,7 +402,7 @@ export default function WorkflowPage() {
                             {config.label}
                           </span>
                         </div>
-                        <p className="text-xs text-[#6B6E85] dark:text-[#8B8FA3] font-mono mt-0.5">#{node.id}</p>
+                        <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-mono mt-0.5">#{node.id}</p>
                       </div>
                     </div>
 
@@ -412,7 +412,7 @@ export default function WorkflowPage() {
                           {node.engine}
                         </span>
                       )}
-                      <ArrowRight size={14} className={isSelected ? 'text-[#6D4AEB]' : 'text-[#6B6E85] dark:text-[#8B8FA3]'} />
+                      <ArrowRight size={14} className={isSelected ? 'text-[#6D4AEB]' : 'text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3]'} />
                     </div>
                   </div>
 
@@ -421,7 +421,7 @@ export default function WorkflowPage() {
                       {Object.entries(node.branches).map(([branchLabel, targetId]) => (
                         <span
                           key={branchLabel}
-                          className="text-[10px] px-2 py-0.5 rounded bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(15,20,35,0.5)] border border-white/90 dark:border-white/10 text-[#6B6E85] dark:text-[#8B8FA3] flex items-center gap-1 font-mono shadow-sm"
+                          className="text-[10px] px-2 py-0.5 rounded bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(15,20,35,0.5)] border border-white/90 dark:border-white/10 text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] flex items-center gap-1 font-mono shadow-sm"
                         >
                           <span className="text-[#6D4AEB] font-semibold">{branchLabel}</span>
                           <ArrowRight size={9} />
@@ -443,7 +443,7 @@ export default function WorkflowPage() {
         </div>
 
         {/* Right (5 cols): Deep Node Execution Inspector */}
-        <div className={`lg:col-span-5 glass-card bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(15,20,35,0.9)] p-5 md:p-6 space-y-5 sticky top-24 border border-[rgba(109,74,235,0.25)] ${mobileWorkflowView === 'inspector' ? 'block' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-5 glass-card bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(15,20,35,0.9)] p-5 md:p-4 sm:p-5 space-y-5 sticky top-24 border border-[rgba(109,74,235,0.25)] ${mobileWorkflowView === 'inspector' ? 'block' : 'hidden lg:block'}`}>
           <div className="flex items-center justify-between border-b border-gray-200 dark:border-white/10 pb-3">
             <div>
               <span className="text-[10px] font-mono uppercase tracking-wider text-[#6D4AEB] font-semibold flex items-center gap-1.5">
@@ -462,7 +462,7 @@ export default function WorkflowPage() {
 
           <div className="space-y-4 text-xs">
             <div>
-              <p className="text-[11px] uppercase tracking-wider text-[#6B6E85] dark:text-[#8B8FA3] font-medium mb-1">Node Identifier</p>
+              <p className="text-[11px] uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-medium mb-1">Node Identifier</p>
               <p className="font-mono text-[#6D4AEB] bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(0,0,0,0.3)] border border-white/90 dark:border-white/10 rounded-lg p-2.5 select-all">
                 {selectedNode.id}
               </p>
@@ -470,7 +470,7 @@ export default function WorkflowPage() {
 
             {selectedNode.action && (
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-[#6B6E85] dark:text-[#8B8FA3] font-medium mb-1">Action Hook</p>
+                <p className="text-[11px] uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-medium mb-1">Action Hook</p>
                 <p className="font-mono text-[#0E9C74] bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(0,0,0,0.3)] border border-white/90 dark:border-white/10 rounded-lg p-2.5 select-all">
                   {selectedNode.action}
                 </p>
@@ -479,7 +479,7 @@ export default function WorkflowPage() {
 
             {selectedNode.reads && (
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-[#6B6E85] dark:text-[#8B8FA3] font-medium mb-1 flex items-center gap-1.5">
+                <p className="text-[11px] uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-medium mb-1 flex items-center gap-1.5">
                   <Database size={12} className="text-[#6D4AEB]" /> Corroborated Data Feeds
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -497,7 +497,7 @@ export default function WorkflowPage() {
 
             {selectedNode.condition && (
               <div>
-                <p className="text-[11px] uppercase tracking-wider text-[#6B6E85] dark:text-[#8B8FA3] font-medium mb-1">Gate Expression</p>
+                <p className="text-[11px] uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-medium mb-1">Gate Expression</p>
                 <div className="bg-[rgba(201,122,0,0.06)] border border-[rgba(201,122,0,0.15)] rounded-lg p-2.5 text-[#C97A00] font-mono leading-relaxed">
                   {selectedNode.condition}
                 </div>
@@ -513,8 +513,8 @@ export default function WorkflowPage() {
             )}
 
             <div>
-              <p className="text-[11px] uppercase tracking-wider text-[#6B6E85] dark:text-[#8B8FA3] font-medium mb-1">Next Edge Transition</p>
-              <div className="bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(0,0,0,0.3)] border border-white/90 dark:border-white/10 rounded-lg p-2.5 font-mono text-[#6B6E85] dark:text-[#8B8FA3]">
+              <p className="text-[11px] uppercase tracking-wider text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] font-medium mb-1">Next Edge Transition</p>
+              <div className="bg-[rgba(255,255,255,0.5)] dark:bg-[rgba(0,0,0,0.3)] border border-white/90 dark:border-white/10 rounded-lg p-2.5 font-mono text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3]">
                 {selectedNode.next ? (
                   <span className="text-[#6D4AEB]">{selectedNode.next.join(', ')}</span>
                 ) : selectedNode.branches ? (
@@ -528,11 +528,11 @@ export default function WorkflowPage() {
             </div>
 
             <div className="pt-2 border-t border-gray-200 dark:border-white/10">
-              <div className="flex items-center justify-between text-[11px] text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
+              <div className="flex items-center justify-between text-[11px] text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-2">
                 <span>Production Runtime Hook</span>
                 <span className="text-[#0E9C74] font-semibold">100% Non-Breaking Seam</span>
               </div>
-              <p className="text-[#9599AD] text-[11px] leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-400 text-[11px] leading-relaxed">
                 When swapping to live Orchestration endpoints, invoke{' '}
                 <code className="text-[#6D4AEB] font-mono">enterpro.dispatch(&quot;{selectedNode.id}&quot;)</code> inside{' '}
                 <code className="text-[#6D4AEB] font-mono">lib/workflow/workflowEngine.ts</code>. All other layers remain

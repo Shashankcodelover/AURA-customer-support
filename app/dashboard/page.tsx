@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAppState } from '@/lib/context/AppStateContext';
 import ContextCapsuleCard from '@/components/ContextCapsuleCard';
 import {
@@ -119,7 +120,13 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="space-y-8 animate-fadeIn"
+    >
       {/* Top Header & Overview */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -128,13 +135,13 @@ export default function DashboardPage() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#0E9C74]" />
               Human-in-the-Loop Operations
             </span>
-            <span className="text-[#6B6E85] dark:text-[#8B8FA3] text-xs">·</span>
-            <span className="text-xs text-[#6B6E85] dark:text-[#8B8FA3]">Operations center</span>
+            <span className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] text-xs">·</span>
+            <span className="text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3]">Operations center</span>
           </div>
           <h1 className="font-display text-2xl md:text-3xl font-bold text-[#1B1D2A] dark:text-white tracking-tight">
             Agent Operational Dashboard
           </h1>
-          <p className="text-[#6B6E85] dark:text-[#8B8FA3] text-sm mt-1 max-w-2xl">
+          <p className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] text-sm mt-1 max-w-2xl">
             Autonomous escalations synthesized into compact Context Capsules. Zero manual ticket triage or repetitive
             customer re-prompting.
           </p>
@@ -143,14 +150,14 @@ export default function DashboardPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={handleSeedDemoCapsule}
-            className="px-3.5 py-2 rounded-xl bg-[rgba(109,74,235,0.08)] border border-[rgba(109,74,235,0.2)] text-[#6D4AEB] hover:bg-[rgba(109,74,235,0.15)] dark:bg-[rgba(109,74,235,0.15)] dark:text-[#B69CFF] dark:hover:bg-[rgba(109,74,235,0.25)] text-xs font-medium transition flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-2 rounded-xl bg-[rgba(109,74,235,0.08)] border border-[rgba(109,74,235,0.2)] text-[#6D4AEB] hover:bg-[rgba(109,74,235,0.15)] dark:bg-[rgba(109,74,235,0.15)] dark:text-[#B69CFF] dark:hover:bg-[rgba(109,74,235,0.25)] text-xs font-medium transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none flex items-center gap-1.5 shadow-sm"
           >
             <Sparkles size={14} /> Seed VIP Enterprise Case
           </button>
           <button
             onClick={resetDemo}
             title="Reset to Baseline Seed"
-            className="p-2 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#6B6E85] hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white transition text-xs"
+            className="p-2 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-slate-700 dark:text-slate-300 hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none text-xs"
           >
             <RefreshCw size={14} />
           </button>
@@ -160,7 +167,7 @@ export default function DashboardPage() {
       {/* KPI Status Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="glass-card glass-hero-stat p-4">
-          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
+          <div className="flex items-center justify-between text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Active Queue</span>
             <ShieldAlert size={16} className="text-[#C97A00]" />
           </div>
@@ -171,7 +178,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="glass-card p-4">
-          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
+          <div className="flex items-center justify-between text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Resolved Today</span>
             <CheckCircle2 size={16} className="text-[#0E9C74]" />
           </div>
@@ -182,7 +189,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="glass-card p-4">
-          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
+          <div className="flex items-center justify-between text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Self-Learning KB</span>
             <BookOpen size={16} className="text-[#6D4AEB] dark:text-[#B69CFF]" />
           </div>
@@ -193,7 +200,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="glass-card p-4">
-          <div className="flex items-center justify-between text-[#6B6E85] dark:text-[#8B8FA3] mb-2">
+          <div className="flex items-center justify-between text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-2">
             <span className="text-xs font-medium uppercase tracking-wider">Mean Escalation SLA</span>
             <Clock size={16} className="text-[#0E9C74]" />
           </div>
@@ -215,10 +222,10 @@ export default function DashboardPage() {
                 <button
                   key={filter}
                   onClick={() => setSelectedFilter(filter)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition whitespace-nowrap border ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none whitespace-nowrap border ${
                     active
                       ? 'bg-[rgba(109,74,235,0.1)] text-[#6D4AEB] border-[rgba(109,74,235,0.3)] dark:bg-[rgba(109,74,235,0.2)] dark:text-[#B69CFF] shadow-sm'
-                      : 'bg-[rgba(255,255,255,0.7)] text-[#6B6E85] border-white/90 hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:text-[#8B8FA3] dark:border-white/10 dark:hover:bg-white/5'
+                      : 'bg-[rgba(255,255,255,0.7)] text-slate-700 dark:text-slate-300 border-white/90 hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:text-[#8B8FA3] dark:border-white/10 dark:hover:bg-white/5'
                   }`}
                 >
                   {filter === 'All'
@@ -234,13 +241,13 @@ export default function DashboardPage() {
           </div>
 
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9599AD]" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by customer, issue, or cause..."
-              className="w-full sm:w-64 pl-8 pr-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#1B1D2A] placeholder-[#9599AD] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white transition"
+              className="w-full sm:w-64 pl-8 pr-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#1B1D2A] placeholder-[#9599AD] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
             />
           </div>
         </div>
@@ -253,7 +260,7 @@ export default function DashboardPage() {
             </div>
             <div>
               <h3 className="font-display text-base font-semibold text-[#1B1D2A] dark:text-white">No Escalated Cases In Queue</h3>
-              <p className="text-[#6B6E85] dark:text-[#8B8FA3] text-xs max-w-md mx-auto mt-1">
+              <p className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] text-xs max-w-md mx-auto mt-1">
                 Trigger scenarios like <span className="text-[#6D4AEB] dark:text-[#B69CFF]">Cancel Subscription</span> or{' '}
                 <span className="text-[#6D4AEB] dark:text-[#B69CFF]">Delayed Shipment</span> on the chat page, or seed a sample VIP enterprise
                 incident right now.
@@ -261,22 +268,24 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={handleSeedDemoCapsule}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] hover:opacity-95 text-[#1B1D2A] text-xs font-semibold shadow-sm transition"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#6EE7C8] via-[#B69CFF] to-[#FFAFD1] hover:opacity-95 text-[#1B1D2A] text-xs font-semibold shadow-sm transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
             >
               <Sparkles size={14} /> Pre-populate Enterprise Escalation Capsule
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-5">
-            {filteredCapsules.map((c) => (
-              <ContextCapsuleCard key={c.id} capsule={c} onResolve={resolveCapsule} onDelete={deleteCapsule} />
-            ))}
-          </div>
+          <motion.div layout className="grid md:grid-cols-2 gap-5">
+            <AnimatePresence mode="popLayout">
+              {filteredCapsules.map((c) => (
+                <ContextCapsuleCard key={c.id} capsule={c} onResolve={resolveCapsule} onDelete={deleteCapsule} />
+              ))}
+            </AnimatePresence>
+          </motion.div>
         )}
       </div>
 
       {/* Enterprise Knowledge Base Library */}
-      <div className="glass-card p-5 md:p-6 space-y-4">
+      <div className="glass-card p-5 md:p-4 sm:p-5 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[rgba(109,74,235,0.08)] dark:border-white/10 pb-4">
           <div>
             <div className="flex items-center gap-2">
@@ -288,7 +297,7 @@ export default function DashboardPage() {
                 {kbArticles.length} entries
               </span>
             </div>
-            <p className="text-xs text-[#6B6E85] dark:text-[#8B8FA3] mt-1">
+            <p className="text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mt-1">
               Real-time synthesized organizational memory. Human resolutions auto-draft new articles to permanently prevent
               future escalations.
             </p>
@@ -297,19 +306,19 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setNewArticleModalOpen(true)}
-              className="px-3 py-1.5 rounded-xl bg-[rgba(109,74,235,0.1)] text-[#6D4AEB] border border-[rgba(109,74,235,0.25)] dark:bg-[rgba(109,74,235,0.2)] dark:text-[#B69CFF] text-xs font-semibold flex items-center gap-1.5 hover:bg-[rgba(109,74,235,0.15)] transition shadow-sm whitespace-nowrap"
+              className="px-3 py-1.5 rounded-xl bg-[rgba(109,74,235,0.1)] text-[#6D4AEB] border border-[rgba(109,74,235,0.25)] dark:bg-[rgba(109,74,235,0.2)] dark:text-[#B69CFF] text-xs font-semibold flex items-center gap-1.5 hover:bg-[rgba(109,74,235,0.15)] transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none shadow-sm whitespace-nowrap"
             >
               <Edit3 size={13} /> Author Article
             </button>
 
             <div className="relative">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9599AD]" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400" />
               <input
                 type="text"
                 value={kbSearch}
                 onChange={(e) => setKbSearch(e.target.value)}
                 placeholder="Search knowledge base..."
-                className="w-full sm:w-60 pl-8 pr-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#1B1D2A] placeholder-[#9599AD] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white transition"
+                className="w-full sm:w-60 pl-8 pr-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#1B1D2A] placeholder-[#9599AD] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
               />
             </div>
           </div>
@@ -331,7 +340,7 @@ export default function DashboardPage() {
               <div
                 key={a.id}
                 onClick={() => setExpandedKb(isExpanded ? null : a.id)}
-                className="p-3.5 rounded-xl bg-[rgba(255,255,255,0.8)] border border-white/90 hover:border-[rgba(109,74,235,0.2)] shadow-sm dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:hover:border-[rgba(109,74,235,0.3)] cursor-pointer transition flex flex-col justify-between group"
+                className="p-3.5 rounded-xl bg-[rgba(255,255,255,0.8)] border border-white/90 hover:border-[rgba(109,74,235,0.2)] shadow-sm dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:hover:border-[rgba(109,74,235,0.3)] cursor-pointer transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none flex flex-col justify-between group"
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -347,21 +356,21 @@ export default function DashboardPage() {
                             deleteKbArticle(a.id);
                           }
                         }}
-                        className="p-1 rounded text-[#9599AD] hover:text-[#E11D48] hover:bg-[rgba(225,29,72,0.1)] transition"
+                        className="p-1 rounded text-slate-600 dark:text-slate-400 hover:text-[#E11D48] hover:bg-[rgba(225,29,72,0.1)] transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
                         title="Delete Article"
                       >
                         <Trash2 size={13} />
                       </button>
-                      <span className="text-[#9599AD] group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition">
+                      <span className="text-slate-600 dark:text-slate-400 group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none">
                         {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                       </span>
                     </div>
                   </div>
-                  <h4 className="text-sm font-bold text-[#1B1D2A] dark:text-white group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition line-clamp-1">
+                  <h4 className="text-sm font-bold text-[#1B1D2A] dark:text-white group-hover:text-[#6D4AEB] dark:group-hover:text-[#B69CFF] transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none line-clamp-1">
                     {a.title}
                   </h4>
                   <p
-                    className={`text-xs text-[#6B6E85] dark:text-[#8B8FA3] mt-1 leading-relaxed ${
+                    className={`text-xs text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mt-1 leading-relaxed ${
                       isExpanded ? 'line-clamp-none' : 'line-clamp-2'
                     }`}
                   >
@@ -371,7 +380,7 @@ export default function DashboardPage() {
 
                 <div className="flex flex-wrap gap-1 mt-3 pt-2 border-t border-[rgba(109,74,235,0.08)] dark:border-white/5">
                   {a.tags?.map((t) => (
-                    <span key={t} className="text-[10px] text-[#9599AD] font-mono">
+                    <span key={t} className="text-[10px] text-slate-600 dark:text-slate-400 font-mono">
                       #{t}
                     </span>
                   ))}
@@ -387,7 +396,7 @@ export default function DashboardPage() {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <form
             onSubmit={handleCreateArticle}
-            className="glass-card p-6 max-w-xl w-full bg-white dark:bg-[#0F1424] border-[rgba(109,74,235,0.3)] space-y-4 animate-fadeIn"
+            className="glass-card p-4 sm:p-5 max-w-xl w-full bg-white dark:bg-[#0F1424] border-[rgba(109,74,235,0.3)] space-y-4 animate-fadeIn"
           >
             <div className="flex items-center justify-between border-b border-[rgba(109,74,235,0.08)] dark:border-white/10 pb-3">
               <div className="flex items-center gap-2">
@@ -397,7 +406,7 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => setNewArticleModalOpen(false)}
-                className="p-1.5 rounded-lg bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#6B6E85] hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white"
+                className="p-1.5 rounded-lg bg-[rgba(255,255,255,0.5)] border border-white/90 text-slate-700 dark:text-slate-300 hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white"
               >
                 <X size={16} />
               </button>
@@ -405,24 +414,24 @@ export default function DashboardPage() {
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Article Title</label>
+                <label className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-1 block">Article Title</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. AWS Multi-Region Gateway Timeout Policy"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition"
+                  className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Category Domain</label>
+                  <label className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-1 block">Category Domain</label>
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value as any)}
-                    className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition"
+                    className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
                   >
                     <option value="Billing">Billing</option>
                     <option value="Technical">Technical</option>
@@ -432,26 +441,26 @@ export default function DashboardPage() {
                 </div>
 
                 <div>
-                  <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Search Tags (comma-separated)</label>
+                  <label className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-1 block">Search Tags (comma-separated)</label>
                   <input
                     type="text"
                     placeholder="gateway, retry, refund"
                     value={newTags}
                     onChange={(e) => setNewTags(e.target.value)}
-                    className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition"
+                    className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl px-3 py-2 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-[#6B6E85] dark:text-[#8B8FA3] mb-1 block">Standard Operating Procedure / Resolution Body</label>
+                <label className="text-slate-700 dark:text-slate-300 dark:text-[#8B8FA3] mb-1 block">Standard Operating Procedure / Resolution Body</label>
                 <textarea
                   required
                   rows={4}
                   placeholder="Document the exact technical diagnosis and step-by-step remediation protocol..."
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
-                  className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl p-3 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs resize-none transition"
+                  className="w-full bg-[rgba(255,255,255,0.5)] border border-white/90 rounded-xl p-3 text-[#1B1D2A] focus:outline-none focus:border-[#6D4AEB] dark:bg-[rgba(0,0,0,0.3)] dark:border-white/10 dark:text-white dark:focus:border-[#6D4AEB] text-xs resize-none transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
                 />
               </div>
             </div>
@@ -460,7 +469,7 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => setNewArticleModalOpen(false)}
-                className="px-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-[#6B6E85] hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white text-xs transition"
+                className="px-3 py-1.5 rounded-xl bg-[rgba(255,255,255,0.5)] border border-white/90 text-slate-700 dark:text-slate-300 hover:text-[#1B1D2A] hover:bg-white dark:bg-[rgba(15,20,35,0.72)] dark:border-white/10 dark:text-[#8B8FA3] dark:hover:text-white text-xs transition focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none"
               >
                 Cancel
               </button>
@@ -474,6 +483,6 @@ export default function DashboardPage() {
           </form>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

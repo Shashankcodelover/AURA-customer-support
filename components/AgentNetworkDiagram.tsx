@@ -40,18 +40,18 @@ export default function AgentNetworkDiagram({ revealedSteps }: { revealedSteps: 
                 ? 'border-[#6D4AEB] bg-[rgba(109,74,235,0.08)] dark:border-cyan-400 dark:bg-violet-500/20 text-[#1B1D2A] dark:text-white shadow-[0_0_25px_rgba(109,74,235,0.2)] scale-[1.02]'
                 : routerStatus === 'done'
                 ? 'border-[rgba(14,156,116,0.4)] dark:border-emerald-500/50 bg-[rgba(14,156,116,0.06)] dark:bg-emerald-500/10 text-[#0E9C74] dark:text-emerald-200'
-                : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.03] text-[#9599AD] dark:text-gray-500'
+                : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.03] text-slate-600 dark:text-slate-400 dark:text-gray-500'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <div className={`p-1.5 rounded-lg ${routerStatus === 'active' ? 'bg-[#6D4AEB] text-white dark:bg-cyan-400 dark:text-black animate-pulse' : 'bg-black/5 dark:bg-white/10 text-[#9599AD] dark:text-gray-400'}`}>
+              <div className={`p-1.5 rounded-lg ${routerStatus === 'active' ? 'bg-[#6D4AEB] text-white dark:bg-cyan-400 dark:text-black animate-pulse' : 'bg-black/5 dark:bg-white/10 text-slate-600 dark:text-slate-400 dark:text-gray-400'}`}>
                 <Radio size={15} />
               </div>
               <div>
                 <div className={`font-semibold text-xs flex items-center gap-2 ${routerStatus === 'active' ? 'text-[#1B1D2A] dark:text-white' : 'text-[#1B1D2A] dark:text-white'}`}>
-                  Router Agent <span className="text-[10px] text-[#6B6E85] dark:text-gray-400 font-mono font-normal">#qwen-intent</span>
+                  Router Agent <span className="text-[10px] text-slate-700 dark:text-slate-300 dark:text-gray-400 font-mono font-normal">#qwen-intent</span>
                 </div>
-                <div className="text-[10px] text-[#6B6E85] dark:text-gray-400">Classifies intent, sentiment, and urgency</div>
+                <div className="text-[10px] text-slate-700 dark:text-slate-300 dark:text-gray-400">Classifies intent, sentiment, and urgency</div>
               </div>
             </div>
             {routerStatus === 'active' && <span className="text-[10px] font-mono font-bold text-[#6D4AEB] dark:text-violet-300 animate-pulse">CLASSIFYING...</span>}
@@ -85,21 +85,21 @@ export default function AgentNetworkDiagram({ revealedSteps }: { revealedSteps: 
                     ? `bg-gradient-to-br ${s.color} shadow-[0_0_20px_rgba(109,74,235,0.2)] dark:shadow-[0_0_20px_rgba(6,182,212,0.35)] scale-105`
                     : status === 'done'
                     ? 'border-[rgba(14,156,116,0.4)] dark:border-emerald-500/50 bg-[rgba(14,156,116,0.06)] dark:bg-emerald-500/10 text-[#0E9C74] dark:text-emerald-200'
-                    : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.02] text-[#9599AD] dark:text-gray-500 opacity-60'
+                    : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.02] text-slate-600 dark:text-slate-400 dark:text-gray-500 opacity-60'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <Icon size={16} className={status === 'active' ? 'animate-bounce' : status === 'done' ? 'text-[#0E9C74] dark:text-emerald-400' : 'text-[#9599AD] dark:text-gray-500'} />
+                  <Icon size={16} className={status === 'active' ? 'animate-bounce' : status === 'done' ? 'text-[#0E9C74] dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400 dark:text-gray-500'} />
                   {status === 'active' ? (
                     <span className="w-2 h-2 rounded-full bg-[#6D4AEB] dark:bg-violet-400 animate-ping" />
                   ) : status === 'done' ? (
                     <CheckCircle size={12} className="text-[#0E9C74] dark:text-emerald-400" />
                   ) : (
-                    <Clock size={12} className="text-[#9599AD] dark:text-gray-600" />
+                    <Clock size={12} className="text-slate-600 dark:text-slate-400 dark:text-gray-600" />
                   )}
                 </div>
                 <div className="text-xs font-bold text-[#1B1D2A] dark:text-white">{s.name} Agent</div>
-                <div className="text-[10px] text-[#6B6E85] dark:text-gray-400 leading-tight mt-0.5">{s.role}</div>
+                <div className="text-[10px] text-slate-700 dark:text-slate-300 dark:text-gray-400 leading-tight mt-0.5">{s.role}</div>
               </div>
             );
           })}
@@ -124,18 +124,18 @@ export default function AgentNetworkDiagram({ revealedSteps }: { revealedSteps: 
                 ? 'border-[#6D4AEB] bg-[rgba(109,74,235,0.08)] dark:border-blue-400 dark:bg-blue-500/20 text-[#1B1D2A] dark:text-white shadow-[0_0_25px_rgba(109,74,235,0.2)] dark:shadow-[0_0_25px_rgba(168,85,247,0.4)] scale-[1.02]'
                 : reasoningStatus === 'done'
                 ? 'border-[rgba(14,156,116,0.4)] dark:border-emerald-500/50 bg-[rgba(14,156,116,0.06)] dark:bg-emerald-500/10 text-[#0E9C74] dark:text-emerald-200'
-                : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.03] text-[#9599AD] dark:text-gray-500'
+                : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.03] text-slate-600 dark:text-slate-400 dark:text-gray-500'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <div className={`p-1.5 rounded-lg ${reasoningStatus === 'active' ? 'bg-[#6D4AEB] text-white dark:bg-blue-500 animate-pulse' : 'bg-black/5 dark:bg-white/10 text-[#9599AD] dark:text-gray-400'}`}>
+              <div className={`p-1.5 rounded-lg ${reasoningStatus === 'active' ? 'bg-[#6D4AEB] text-white dark:bg-blue-500 animate-pulse' : 'bg-black/5 dark:bg-white/10 text-slate-600 dark:text-slate-400 dark:text-gray-400'}`}>
                 <Brain size={15} />
               </div>
               <div>
                 <div className="font-semibold text-xs text-[#1B1D2A] dark:text-white flex items-center gap-2">
-                  Root-Cause Detective <span className="text-[10px] text-[#6B6E85] dark:text-gray-400 font-mono font-normal">#cross-source-synth</span>
+                  Root-Cause Detective <span className="text-[10px] text-slate-700 dark:text-slate-300 dark:text-gray-400 font-mono font-normal">#cross-source-synth</span>
                 </div>
-                <div className="text-[10px] text-[#6B6E85] dark:text-gray-400">Traces symptoms to systemic root causes</div>
+                <div className="text-[10px] text-slate-700 dark:text-slate-300 dark:text-gray-400">Traces symptoms to systemic root causes</div>
               </div>
             </div>
             {reasoningStatus === 'active' && <span className="text-[10px] font-mono font-bold text-[#6D4AEB] dark:text-blue-300 animate-pulse">SYNTHESIZING...</span>}
@@ -154,18 +154,18 @@ export default function AgentNetworkDiagram({ revealedSteps }: { revealedSteps: 
                 ? 'border-[#C97A00] bg-[rgba(201,122,0,0.08)] dark:border-amber-400 dark:bg-amber-500/20 text-[#1B1D2A] dark:text-white shadow-[0_0_25px_rgba(201,122,0,0.2)] dark:shadow-[0_0_25px_rgba(245,158,11,0.4)] scale-[1.02]'
                 : escalationStatus === 'done'
                 ? 'border-[rgba(14,156,116,0.4)] dark:border-emerald-500/50 bg-[rgba(14,156,116,0.06)] dark:bg-emerald-500/10 text-[#0E9C74] dark:text-emerald-200'
-                : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.03] text-[#9599AD] dark:text-gray-500'
+                : 'border-white/90 dark:border-white/10 bg-[rgba(255,255,255,0.5)] dark:bg-white/[0.03] text-slate-600 dark:text-slate-400 dark:text-gray-500'
             }`}
           >
             <div className="flex items-center gap-2.5">
-              <div className={`p-1.5 rounded-lg ${escalationStatus === 'active' ? 'bg-[#C97A00] text-white dark:bg-amber-500 dark:text-black animate-pulse' : 'bg-black/5 dark:bg-white/10 text-[#9599AD] dark:text-gray-400'}`}>
+              <div className={`p-1.5 rounded-lg ${escalationStatus === 'active' ? 'bg-[#C97A00] text-white dark:bg-amber-500 dark:text-black animate-pulse' : 'bg-black/5 dark:bg-white/10 text-slate-600 dark:text-slate-400 dark:text-gray-400'}`}>
                 <ShieldAlert size={15} />
               </div>
               <div>
                 <div className="font-semibold text-xs text-[#1B1D2A] dark:text-white flex items-center gap-2">
-                  Decision Engine <span className="text-[10px] text-[#6B6E85] dark:text-gray-400 font-mono font-normal">#confidence-gate</span>
+                  Decision Engine <span className="text-[10px] text-slate-700 dark:text-slate-300 dark:text-gray-400 font-mono font-normal">#confidence-gate</span>
                 </div>
-                <div className="text-[10px] text-[#6B6E85] dark:text-gray-400">Auto-Resolve (&ge;70%) vs Context Capsule Handoff</div>
+                <div className="text-[10px] text-slate-700 dark:text-slate-300 dark:text-gray-400">Auto-Resolve (&ge;70%) vs Context Capsule Handoff</div>
               </div>
             </div>
             {escalationStatus === 'active' && <span className="text-[10px] font-mono font-bold text-[#C97A00] dark:text-amber-300 animate-pulse">EVALUATING...</span>}
